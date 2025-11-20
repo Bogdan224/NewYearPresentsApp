@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="NewYearPresents.App.Views.ProductsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NewYearPresents.App.Views"
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid Background="White"
+                  x:Name="dataGrid"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  MinRowHeight="20"
+                  RowDetailsVisibilityMode="Visible"
+                  VerticalAlignment="Top"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="True"
+                  Sorting="DataGrid_Sorting"
+                  CanUserResizeRows="False"
+                  Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="70"
+                                    Binding="{Binding Path=Id}"
+                                    IsReadOnly="True"
+                                    Foreground="Black">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Id"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Width="3*" 
+                                    Binding="{Binding Path=Name}"
+                                    Foreground="Black"
+                                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Название"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Width="*"
+                                    Binding="{Binding Path=ManufacturerName}"
+                                    Foreground="Black"
+                                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Производитель"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Width="auto" 
+                                    Binding="{Binding Path=ProductTypeName}"
+                                    Foreground="Black"
+                                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Категория"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Width="auto"                                    
+                                    Binding="{Binding Path=Price30K}"
+                                    Foreground="Black"
+                                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Цена"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Width="auto"
+                                    Binding="{Binding Path=ExpirationDate}"
+                                    Foreground="Black"
+                                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Foreground="Black"
+                                   Text="Срок годности"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
