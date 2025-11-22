@@ -50,7 +50,6 @@ namespace NewYearPresents.App
                 // Обработка ошибок инициализации
                 MessageBox.Show($"Ошибка запуска приложения: {ex.Message}", "Ошибка",
                               MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown(1);
             }
         }
 
@@ -66,6 +65,7 @@ namespace NewYearPresents.App
 
             services.AddDataManager(config.Database.ConnectionString!);
             services.AddTransient<XlsmParser>();
+            services.AddSingleton<Company>(config.Company);
 
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainView>();

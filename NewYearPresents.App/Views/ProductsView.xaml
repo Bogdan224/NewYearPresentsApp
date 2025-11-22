@@ -20,7 +20,8 @@
                   CanUserSortColumns="True"
                   Sorting="DataGrid_Sorting"
                   CanUserResizeRows="False"
-                  Grid.Row="1">
+                  Grid.Row="1"
+                  SelectionUnit="Cell">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="70"
                                     Binding="{Binding Path=Id}"
@@ -35,6 +36,7 @@
                 <DataGridTextColumn Width="3*"
                                     Binding="{Binding Path=Name}"
                                     Foreground="Black"
+                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
@@ -45,6 +47,7 @@
                 <DataGridTextColumn Width="*"
                                     Binding="{Binding Path=ManufacturerName}"
                                     Foreground="Black"
+                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
@@ -55,6 +58,7 @@
                 <DataGridTextColumn Width="auto"
                                     Binding="{Binding Path=ProductTypeName}"
                                     Foreground="Black"
+                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
@@ -65,6 +69,7 @@
                 <DataGridTextColumn Width="auto"
                                     Binding="{Binding Path=Price30K}"
                                     Foreground="Black"
+                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
@@ -75,6 +80,7 @@
                 <DataGridTextColumn Width="auto"
                                     Binding="{Binding Path=ExpirationDate}"
                                     Foreground="Black"
+                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"

@@ -27,11 +27,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock
-                Text="Компания"
+                Text="{Binding Path=Company.Name}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Foreground="Purple"
-                FontSize="22"
+                FontSize="24"
                 FontWeight="Bold"
                 FontStyle="Italic"
                 FontFamily="/Fonts/#Poppins" />
@@ -66,7 +66,7 @@
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
-                    FontSize="14"
+                    FontSize="16"
                     Command="{Binding Path=ProductsViewCommand}"
                     IsChecked="True" />
 
@@ -75,21 +75,23 @@
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
-                    FontSize="14" />
+                    FontSize="16" 
+                    Visibility="Hidden" />
 
                 <RadioButton
                     Content="Заказы"
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
-                    FontSize="14" />
+                    FontSize="16" 
+                    Visibility="Hidden"/>
 
                 <RadioButton
                     Content="Парсинг данных"
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
-                    FontSize="14"
+                    FontSize="16"
                     Command="{Binding Path=ParsingViewCommand}"
                     Visibility="Collapsed" />
             </StackPanel>
