@@ -100,7 +100,7 @@ namespace NewYearPresents.Parser
                     {
                         var product = new Product()
                         {
-                            Name = productsTmp[0].ToString(),
+                            Name = productsTmp[0].ToString().NormalizeText(),
                             Price30K = Convert.ToSingle(productsTmp[1]),
                             Price60K = Convert.ToSingle(productsTmp[2]),
                             Price100K = Convert.ToSingle(productsTmp[3]),
