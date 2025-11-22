@@ -2,12 +2,6 @@
 using NewYearPresents.App.Views;
 using NewYearPresents.Domain;
 using NewYearPresents.Parser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace NewYearPresents.App.ViewModels
 {
@@ -21,7 +15,8 @@ namespace NewYearPresents.App.ViewModels
 
         public object? _currentView;
 
-        public object? CurrentView {
+        public object? CurrentView
+        {
             get { return _currentView; }
             set
             {

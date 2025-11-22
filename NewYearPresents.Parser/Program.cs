@@ -1,8 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using NewYearPresents.Models.Entities;
-using NewYearPresents.Parser;
-using System;
-
 namespace NewYearPresents.Parser
 {
     public class Program
@@ -32,8 +27,6 @@ namespace NewYearPresents.Parser
             //        await response.WriteAsJsonAsync(new XlsmParser().InitialParse(message));
             //    }
             //});
-
-
 
             //app.Run();
         }

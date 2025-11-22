@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="NewYearPresents.App.Views.ParsingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NewYearPresents.App.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button 
+        <Button
             Width="120" Content="Спарсить"
-            Background="White" BorderBrush="Black" 
-            Foreground="Black" Click="Parse_Click"/>
+            Background="White" BorderBrush="Black"
+            Foreground="Black" Click="Parse_Click" />
     </Grid>
 </UserControl>

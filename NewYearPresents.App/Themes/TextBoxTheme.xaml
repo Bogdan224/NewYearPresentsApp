@@ -10,7 +10,7 @@
                             Width="200" Height="40">
 
                         <Grid>
-                            <Rectangle StrokeThickness="1"/>
+                            <Rectangle StrokeThickness="1" />
                             <TextBox Margin="1"
                                      Text="{TemplateBinding Text}"
                                      BorderThickness="0"
@@ -18,7 +18,7 @@
                                      VerticalContentAlignment="Center"
                                      Padding="5"
                                      Foreground="#CFCFCF"
-                                     x:Name="SearchBox"/>
+                                     x:Name="SearchBox" />
 
                             <TextBlock IsHitTestVisible="False"
                                        Text="Search"
@@ -28,24 +28,22 @@
                                        FontSize="11"
                                        Foreground="DarkGray"
                                        Grid.Column="1">
-                                
+
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
-                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Setter Property="Visibility" Value="Hidden" />
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
                         </Grid>
-                        
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
 </ResourceDictionary>

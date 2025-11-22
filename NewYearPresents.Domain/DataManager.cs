@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NewYearPresents.Domain.Repositories.Abstract;
-using NewYearPresents.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NewYearPresents.Domain.Repositories.Abstract;
 
 namespace NewYearPresents.Domain
 {

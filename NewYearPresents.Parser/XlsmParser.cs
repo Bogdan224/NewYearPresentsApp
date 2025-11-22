@@ -1,32 +1,27 @@
 ﻿using NewYearPresents.Models.DTOs;
 using NewYearPresents.Models.Entities;
+using NewYearPresents.Models.Extentions;
 using OfficeOpenXml;
-using OfficeOpenXml.CellPictures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewYearPresents.Parser
 {
     public class XlsmParser
     {
-        private readonly string _userName;
+        private readonly string _sourceDirectory;
 
         public XlsmParser()
         {
-            _userName = $@"C:\Users\{Environment.UserName}\Downloads\";
+            _sourceDirectory = $@"C:\Users\{Environment.UserName}\Downloads\";
         }
 
         /// <summary>
-        /// Парсит .xlsm файл 
+        /// Парсит .xlsm файл
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
         public ParsedDataDTO InitialParse(string filename)
         {
-            using (ExcelPackage package = new ExcelPackage(_userName + filename))
+            using (ExcelPackage package = new ExcelPackage(_sourceDirectory + filename))
             {
                 ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
@@ -61,10 +56,10 @@ namespace NewYearPresents.Parser
                             //Проверка на производителя
                             if (j == 1 && worksheet.Cells[i, 8].Value == null)
                             {
-                                //Если строки сгруппированы, то считывает 
+                                //Если строки сгруппированы, то считывает
                                 if (worksheet.Row(i).OutlineLevel == 0)
                                 {
-                                    manufacturers.Add(new Manufacturer() { Name = ToUpperFirstLetter(value.ToString()) });
+                                    manufacturers.Add(new Manufacturer() { Name = value.ToString().NormalizeText() });
                                     if (worksheet.Cells[i + 1, 8].Value != null)
                                         currentProductType = productTypes[0];
                                 }
@@ -72,7 +67,7 @@ namespace NewYearPresents.Parser
                                 {
                                     if (worksheet.Cells[i + 1, 8].Value != null)
                                     {
-                                        var productType = new ProductType() { Name = ToUpperFirstLetter(value.ToString()) };
+                                        var productType = new ProductType() { Name = value.ToString().NormalizeText() };
                                         if (!productTypes.Any(x => x.Name == productType.Name))
                                         {
                                             productTypes.Add(productType);
@@ -82,11 +77,10 @@ namespace NewYearPresents.Parser
                                         {
                                             currentProductType = productTypes.Find(x => x.Name == productType.Name)!;
                                         }
-                                    }   
+                                    }
                                 }
                                 break;
                             }
-
 
                             if (j == 8)
                             {
@@ -100,7 +94,6 @@ namespace NewYearPresents.Parser
                             }
 
                             productsTmp.Add(value);
-
                         }
                     }
                     if (productsTmp.Count == 6)
@@ -118,7 +111,6 @@ namespace NewYearPresents.Parser
                             ProductType = currentProductType
                         };
                         products.Add(product);
-
                     }
                     if (productsTmp.Count > 0)
                         productsTmp.Clear();
@@ -126,25 +118,6 @@ namespace NewYearPresents.Parser
 
                 return new ParsedDataDTO() { Products = products, ProductTypes = productTypes, Manufacturers = manufacturers };
             }
-        }
-
-        private string ToUpperFirstLetter(string? source)
-        {
-            if (string.IsNullOrEmpty(source))
-                return string.Empty;
-
-            source = source.ToLower();
-            while (source[0] == ' ' || source[0] == '*')
-            {
-                source = source.Substring(1);
-            }
-            while (source[source.Length - 1] == ' ')
-            {
-                source = source.Substring(0, source.Length - 1);
-            }
-            char[] letters = source.ToCharArray();
-            letters[0] = char.ToUpper(letters[0]);
-            return new string(letters);
         }
     }
 }

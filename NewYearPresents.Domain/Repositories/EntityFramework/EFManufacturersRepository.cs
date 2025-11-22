@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewYearPresents.Models.Entities;
 using NewYearPresents.Domain.Repositories.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NewYearPresents.Models.Entities;
 
 namespace NewYearPresents.Domain.Repositories.EntityFramework
 {

@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NewYearPresents.Domain.Repositories.Abstract;
 using NewYearPresents.Domain.Repositories.EntityFramework;
-using NewYearPresents.Models.DTOs;
-using NewYearPresents.Models.Entities;
 
 namespace NewYearPresents.Domain
 {
@@ -19,7 +17,5 @@ namespace NewYearPresents.Domain
             services.AddTransient<DataManager>();
             return services;
         }
-
-        
     }
 }

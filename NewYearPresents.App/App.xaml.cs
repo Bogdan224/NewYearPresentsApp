@@ -1,18 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Primitives;
 using NewYearPresents.App.Infrastructure;
 using NewYearPresents.App.ViewModels;
 using NewYearPresents.App.Views;
 using NewYearPresents.Domain;
 using NewYearPresents.Parser;
-using System;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
 
 namespace NewYearPresents.App
@@ -61,7 +54,6 @@ namespace NewYearPresents.App
             }
         }
 
-
         private void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             // Регистрация сервисов
@@ -77,9 +69,6 @@ namespace NewYearPresents.App
 
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainView>();
-
-            
         }
     }
-
 }

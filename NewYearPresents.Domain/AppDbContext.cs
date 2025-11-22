@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewYearPresents.Models.DTOs;
 using NewYearPresents.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewYearPresents.Domain
 {
@@ -18,6 +12,8 @@ namespace NewYearPresents.Domain
         public DbSet<ProductType> ProductTypes { get; set; } = null!;
         public DbSet<Manufacturer> Manufacturers { get; set; } = null!;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
     }
 }

@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using NewYearPresents.Models.Entities;
-
 namespace NewYearPresents.Domain;
 
 public class Program

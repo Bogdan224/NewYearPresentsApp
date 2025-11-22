@@ -1,13 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NewYearPresents.App.Core;
-using NewYearPresents.Domain;
+﻿using NewYearPresents.App.Core;
 using NewYearPresents.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewYearPresents.App.ViewModels
 {
@@ -25,7 +17,7 @@ namespace NewYearPresents.App.ViewModels
             _product = new Product();
         }
 
-        public int Id 
+        public int Id
         {
             get { return _product.Id; }
         }
@@ -41,6 +33,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("Name");
             }
         }
+
         public string? ManufacturerName
         {
             get { return _product.Manufacturer?.Name; }
@@ -52,6 +45,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("ManufacturerName");
             }
         }
+
         public string? ProductTypeName
         {
             get { return _product.ProductType?.Name; }
@@ -63,6 +57,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("ProductTypeName");
             }
         }
+
         public float Price30K
         {
             get { return _product.Price30K; }
@@ -74,6 +69,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("Price30K");
             }
         }
+
         public float Price60K
         {
             get { return _product.Price60K; }
@@ -85,6 +81,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("Price60K");
             }
         }
+
         public float Price100K
         {
             get { return _product.Price100K; }
@@ -96,6 +93,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("Price100K");
             }
         }
+
         public float Price150K
         {
             get { return _product.Price150K; }
@@ -107,6 +105,7 @@ namespace NewYearPresents.App.ViewModels
                 OnPropertyChanged("Price150K");
             }
         }
+
         public int ExpirationDate
         {
             get { return _product.ExpirationDate; }

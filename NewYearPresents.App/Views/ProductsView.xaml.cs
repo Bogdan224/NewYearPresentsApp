@@ -1,21 +1,8 @@
 ﻿using NewYearPresents.App.ViewModels;
 using NewYearPresents.Domain;
-using NewYearPresents.Models.Entities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NewYearPresents.App.Views
 {
@@ -49,7 +36,6 @@ namespace NewYearPresents.App.Views
 
             //UpdateDataGrid(shownProducts, shownProducts + shownProductsConst);
             //shownProducts += shownProductsConst;
-
         }
 
         private async void UpdateDataGrid()
@@ -58,7 +44,7 @@ namespace NewYearPresents.App.Views
             foreach (var product in await _dataManager.Products.GetProductsAsync())
             {
                 Products.Add(new ProductViewModel(product));
-            }            
+            }
         }
 
         private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
