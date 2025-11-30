@@ -31,8 +31,8 @@ namespace NewYearPresents.App.Views
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateDataGrid();
-            dataGrid.DataContext = Products;
-            dataGrid.ItemsSource = Products;
+            ProductDataGrid.DataContext = new ProductViewModel();
+            ProductDataGrid.ItemsSource = Products;
 
             //UpdateDataGrid(shownProducts, shownProducts + shownProductsConst);
             //shownProducts += shownProductsConst;
@@ -47,7 +47,7 @@ namespace NewYearPresents.App.Views
             }
         }
 
-        private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+        private void ProductDataGrid_Sorting(object sender, DataGridSortingEventArgs e)
         {
             throw new NotImplementedException();
         }

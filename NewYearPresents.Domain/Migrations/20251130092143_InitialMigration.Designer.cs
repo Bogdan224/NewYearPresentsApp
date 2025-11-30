@@ -11,7 +11,7 @@ using NewYearPresents.Domain;
 namespace NewYearPresents.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251107163112_InitialMigration")]
+    [Migration("20251130092143_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -60,6 +60,9 @@ namespace NewYearPresents.Domain.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Pieces")
+                        .HasColumnType("int");
+
                     b.Property<float>("Price100K")
                         .HasColumnType("real");
 
@@ -74,6 +77,9 @@ namespace NewYearPresents.Domain.Migrations
 
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

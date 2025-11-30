@@ -8,6 +8,8 @@
         public float Price150K { get; set; }
         public string? Image { get; set; } = null;
         public int ExpirationDate { get; set; }
+        public float Weight { get; set; }
+        public int Pieces { get; set; }
 
         public int ProductTypeId { get; set; }
         public ProductType? ProductType { get; set; }

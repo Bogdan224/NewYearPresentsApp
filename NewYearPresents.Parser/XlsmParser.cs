@@ -2,6 +2,8 @@
 using NewYearPresents.Models.Entities;
 using NewYearPresents.Models.Extentions;
 using OfficeOpenXml;
+using System.Text;
+using System.Xml.Linq;
 
 namespace NewYearPresents.Parser
 {
@@ -110,6 +112,10 @@ namespace NewYearPresents.Parser
                             Manufacturer = manufacturers.Last(),
                             ProductType = currentProductType
                         };
+                        (float weight, int pieces) = GetWeightAndPiecesFromString(product.Name);
+                        product.Weight = weight;
+                        product.Pieces = pieces;
+
                         products.Add(product);
                     }
                     if (productsTmp.Count > 0)
@@ -118,6 +124,95 @@ namespace NewYearPresents.Parser
 
                 return new ParsedDataDTO() { Products = products, ProductTypes = productTypes, Manufacturers = manufacturers };
             }
+        }
+
+        protected (float, int) GetWeightAndPiecesFromString(string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return (0.0f, 0);
+
+            float weight = 0.0f;
+            int pieces = 1;
+
+            if (source.Contains("шт"))
+            {
+                if (source.Contains('(') && source.Contains(')'))
+                {
+                    int lastIndex = source.LastIndexOf("шт");
+                    pieces = Convert.ToInt32(source.GetFloat(lastIndex));
+
+                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/")))
+                    {
+                        lastIndex = source.LastIndexOf('(');
+                        try
+                        {
+                            weight = source.GetFloat(lastIndex);
+                        }
+                        catch
+                        {
+                            lastIndex = source.LastIndexOf('/');
+                            try
+                            {
+                                weight = source.GetFloat(lastIndex);
+                                return (weight, pieces);
+                            }
+                            catch { }
+                        }
+                        
+                    }
+                }
+                else if (source.Contains('/'))
+                {
+                    int lastIndex = source.LastIndexOf("шт");
+                    pieces = Convert.ToInt32(source.GetFloat(lastIndex));
+
+                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/")))
+                    {
+                        lastIndex = source.IndexOf('/');
+                        try
+                        {
+                            weight = source.GetFloat(lastIndex);
+                        }
+                        catch
+                        {
+                            weight = 0;
+                        }
+                        return (weight, pieces);
+                    }
+                }
+                else
+                {
+                    int lastIndex = source.LastIndexOf("шт");
+                    pieces = Convert.ToInt32(source.GetFloat(lastIndex));
+                }
+            }
+
+            if (source.Contains("кг"))
+            {
+                int lastIndex = source.LastIndexOf("кг");
+                weight = source.GetFloat(lastIndex);
+            }
+            else if (source.Contains("гр.") || source.Contains("гр ") || source.Contains("гр/"))
+            {
+                int lastIndex = source.LastIndexOf("гр");
+                weight = source.GetFloat(lastIndex) / 1000;
+            }
+            else if (source.Contains("г р"))
+            {
+                int lastIndex = source.LastIndexOf("г р");
+                weight = source.GetFloat(lastIndex) / 1000;
+            }
+            else if (source.Contains("г "))
+            {
+                int lastIndex = source.LastIndexOf("г ");
+                weight = source.GetFloat(lastIndex) / 1000;
+            }
+            else if (source.Contains("г/"))
+            {
+                int lastIndex = source.LastIndexOf("г/");
+                weight = source.GetFloat(lastIndex) / 1000;
+            }
+            return (weight, pieces);
         }
     }
 }

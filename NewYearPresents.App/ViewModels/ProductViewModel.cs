@@ -106,6 +106,11 @@ namespace NewYearPresents.App.ViewModels
             }
         }
 
+        public float TotalWeight
+        {
+            get { return _product.Weight * _product.Pieces; }
+        }
+
         public int ExpirationDate
         {
             get { return _product.ExpirationDate; }

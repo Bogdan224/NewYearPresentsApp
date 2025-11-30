@@ -92,8 +92,7 @@
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
                     FontSize="16"
-                    Command="{Binding Path=ParsingViewCommand}"
-                    Visibility="Collapsed" />
+                    Command="{Binding Path=ParsingViewCommand}" Cursor="Hand"/>
             </StackPanel>
 
             <ContentControl

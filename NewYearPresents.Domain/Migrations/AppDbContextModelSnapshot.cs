@@ -57,6 +57,9 @@ namespace NewYearPresents.Domain.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Pieces")
+                        .HasColumnType("int");
+
                     b.Property<float>("Price100K")
                         .HasColumnType("real");
 
@@ -71,6 +74,9 @@ namespace NewYearPresents.Domain.Migrations
 
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

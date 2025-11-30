@@ -9,18 +9,17 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <DataGrid Background="White"
-                  x:Name="dataGrid"
+                  x:Name="ProductDataGrid"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   MinRowHeight="20"
                   RowDetailsVisibilityMode="Visible"
                   VerticalAlignment="Top"
                   CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
+                  CanUserResizeColumns="True"
                   CanUserSortColumns="True"
-                  Sorting="DataGrid_Sorting"
+                  Sorting="ProductDataGrid_Sorting"
                   CanUserResizeRows="False"
-                  Grid.Row="1"
                   SelectionUnit="Cell">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="70"
@@ -36,7 +35,6 @@
                 <DataGridTextColumn Width="3*"
                                     Binding="{Binding Path=Name}"
                                     Foreground="Black"
-                                    IsReadOnly="True"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
@@ -77,11 +75,25 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="auto"
-                                    Binding="{Binding Path=ExpirationDate}"
-                                    Foreground="Black"
-                                    IsReadOnly="True"
-                                    CanUserSort="True">
+                <DataGridTextColumn 
+                    Width="auto"
+                    Binding="{Binding Path=TotalWeight}"
+                    Foreground="Black"
+                    IsReadOnly="True"
+                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock 
+                            Foreground="Black"
+                            Text="Общий вес" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn 
+                    Width="auto"
+                    Binding="{Binding Path=ExpirationDate}"
+                    Foreground="Black"
+                    IsReadOnly="True"
+                    CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock Foreground="Black"
                                    Text="Срок годности" />
