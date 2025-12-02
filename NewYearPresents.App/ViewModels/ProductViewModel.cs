@@ -5,120 +5,120 @@ namespace NewYearPresents.App.ViewModels
 {
     public class ProductViewModel : ObservableObject
     {
-        private readonly Product _product;
+        private readonly ProductsBox _productBox;
 
-        public ProductViewModel(Product p)
+        public ProductViewModel(ProductsBox p)
         {
-            _product = p;
+            _productBox = p;
         }
 
         public ProductViewModel()
         {
-            _product = new Product();
+            _productBox = new ProductsBox();
         }
 
         public int Id
         {
-            get { return _product.Id; }
+            get { return _productBox.Id; }
         }
 
         public string? Name
         {
-            get { return _product.Name; }
+            get { return _productBox.Product.Name; }
             set
             {
-                if (_product.Name == value)
+                if (_productBox.Product.Name == value)
                     return;
-                _product.Name = value;
+                _productBox.Product.Name = value;
                 OnPropertyChanged("Name");
             }
         }
 
         public string? ManufacturerName
         {
-            get { return _product.Manufacturer?.Name; }
+            get { return _productBox.Product.Manufacturer?.Name; }
             set
             {
-                if (_product.Manufacturer is null || _product.Manufacturer.Name == value)
+                if (_productBox.Product.Manufacturer is null || _productBox.Product.Manufacturer.Name == value)
                     return;
-                _product.Manufacturer.Name = value;
+                _productBox.Product.Manufacturer.Name = value;
                 OnPropertyChanged("ManufacturerName");
             }
         }
 
         public string? ProductTypeName
         {
-            get { return _product.ProductType?.Name; }
+            get { return _productBox.Product.ProductType?.Name; }
             set
             {
-                if (_product.ProductType is null || _product.ProductType.Name == value)
+                if (_productBox.Product.ProductType is null || _productBox.Product.ProductType.Name == value)
                     return;
-                _product.ProductType.Name = value;
+                _productBox.Product.ProductType.Name = value;
                 OnPropertyChanged("ProductTypeName");
             }
         }
 
         public float Price30K
         {
-            get { return _product.Price30K; }
+            get { return _productBox.Price30K; }
             set
             {
-                if (_product.Price30K == value)
+                if (_productBox.Price30K == value)
                     return;
-                _product.Price30K = value;
+                _productBox.Price30K = value;
                 OnPropertyChanged("Price30K");
             }
         }
 
         public float Price60K
         {
-            get { return _product.Price60K; }
+            get { return _productBox.Price60K; }
             set
             {
-                if (_product.Price60K == value)
+                if (_productBox.Price60K == value)
                     return;
-                _product.Price60K = value;
+                _productBox.Price60K = value;
                 OnPropertyChanged("Price60K");
             }
         }
 
         public float Price100K
         {
-            get { return _product.Price100K; }
+            get { return _productBox.Price100K; }
             set
             {
-                if (_product.Price100K == value)
+                if (_productBox.Price100K == value)
                     return;
-                _product.Price100K = value;
+                _productBox.Price100K = value;
                 OnPropertyChanged("Price100K");
             }
         }
 
         public float Price150K
         {
-            get { return _product.Price150K; }
+            get { return _productBox.Price150K; }
             set
             {
-                if (_product.Price150K == value)
+                if (_productBox.Price150K == value)
                     return;
-                _product.Price150K = value;
+                _productBox.Price150K = value;
                 OnPropertyChanged("Price150K");
             }
         }
 
         public float TotalWeight
         {
-            get { return _product.Weight * _product.Pieces; }
+            get { return _productBox.TotalWeight; }
         }
 
         public int ExpirationDate
         {
-            get { return _product.ExpirationDate; }
+            get { return _productBox.Product.ExpirationDate; }
             set
             {
-                if (_product.ExpirationDate == value)
+                if (_productBox.Product.ExpirationDate == value)
                     return;
-                _product.ExpirationDate = value;
+                _productBox.Product.ExpirationDate = value;
                 OnPropertyChanged("ExpirationDate");
             }
         }

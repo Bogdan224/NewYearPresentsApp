@@ -19,7 +19,7 @@ public class Program
         string connectionString = configuration.GetSection("Database").GetSection("ConnectionString").Value!;
 
         //Добавляем зависимости
-        builder.Services.AddDataManager(connectionString);
+        builder.Services.AddAppDbContext(connectionString);
 
         var app = builder.Build();
 

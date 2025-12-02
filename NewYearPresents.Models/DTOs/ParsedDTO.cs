@@ -2,10 +2,11 @@
 
 namespace NewYearPresents.Models.DTOs
 {
-    public class ParsedDataDTO
+    public class ParsedDTO
     {
         public List<Product>? Products { get; set; }
         public List<ProductType>? ProductTypes { get; set; }
         public List<Manufacturer>? Manufacturers { get; set; }
+        public List<ProductsBox>? ProductsBoxes { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace NewYearPresents.Tests
         [DataRow("Малина со сливками карамель пп/пл 1.0 (6 кг)")]
         public void GetWeightAndPiecesFromStringTest1(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if(x.Item1 == 6.0f && x.Item2 == 1)
+            var x = GetTotalWeightFromString(source);
+            if(x == 6.0f)
             {
                 Assert.IsTrue(true);
             }
@@ -26,8 +26,8 @@ namespace NewYearPresents.Tests
         [DataRow("Мармелад Ягоды от Рахат 0,250 (13 шт)")]
         public void GetWeightAndPiecesFromStringTest2(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.250f && x.Item2 == 13)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.250f * 13)
             {
                 Assert.IsTrue(true);
             }
@@ -40,8 +40,8 @@ namespace NewYearPresents.Tests
         [DataRow("Шоколад Almaty пористый молочный 90 гр.(32 шт)")]
         public void GetWeightAndPiecesFromStringTest3(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 >= 0.080f && x.Item2 == 32)
+            var x = GetTotalWeightFromString(source);
+            if (x >= 0.080f * 32)
             {
                 Assert.IsTrue(true);
             }
@@ -54,8 +54,8 @@ namespace NewYearPresents.Tests
         [DataRow("Молоко цельное сгущенное с сахаром  8,5% ж/б 380 гр (30 шт)")]
         public void GetWeightAndPiecesFromStringTest4(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 >= 0.280f && x.Item2 >= 24)
+            var x = GetTotalWeightFromString(source);
+            if (x >= 0.280f * 24)
             {
                 Assert.IsTrue(true);
             }
@@ -67,8 +67,8 @@ namespace NewYearPresents.Tests
         [DataRow("Молоко сгущенное вареное 0,600кг 8,5% ж /15шт")]
         public void GetWeightAndPiecesFromStringTest5(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.600f && x.Item2 == 15)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.600f * 15)
             {
                 Assert.IsTrue(true);
             }
@@ -79,8 +79,8 @@ namespace NewYearPresents.Tests
         [DataRow("Asia с кунжутом  печ.отсадное   6*1,5кг/9кг")]
         public void GetWeightAndPiecesFromStringTest6(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 9f && x.Item2 == 1)
+            var x = GetTotalWeightFromString(source);
+            if (x == 9f * 1)
             {
                 Assert.IsTrue(true);
             }
@@ -94,8 +94,8 @@ namespace NewYearPresents.Tests
         [DataRow("ФАС/Конфеты МИСС КО-КО Типа ассорти с начинкой 1 кг/5 шт/Сладуница/")]
         public void GetWeightAndPiecesFromStringTest7(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 1f && x.Item2 == 5)
+            var x = GetTotalWeightFromString(source);
+            if (x == 1f * 5)
             {
                 Assert.IsTrue(true);
             }
@@ -107,8 +107,8 @@ namespace NewYearPresents.Tests
         [DataRow("Перец черный молотый \"слон\" 100г (55 шт)")]
         public void GetWeightAndPiecesFromStringTest8(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 >= 0.05f && x.Item2 >= 55)
+            var x = GetTotalWeightFromString(source);
+            if (x >= 0.05f * 55)
             {
                 Assert.IsTrue(true);
             }
@@ -119,8 +119,8 @@ namespace NewYearPresents.Tests
         [DataRow("Алтын кесе кения чай черн.гран.250гр/40шт")]
         public void GetWeightAndPiecesFromStringTest9(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.25f && x.Item2 == 40)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.25f * 40)
             {
                 Assert.IsTrue(true);
             }
@@ -134,8 +134,8 @@ namespace NewYearPresents.Tests
         [DataRow("Фас/конфеты клубничное чудо жел. глазир.1 кг/5 шт/сладуница/")]
         public void GetWeightAndPiecesFromStringTest10(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 1f && x.Item2 == 5)
+            var x = GetTotalWeightFromString(source);
+            if (x == 1f * 5)
             {
                 Assert.IsTrue(true);
             }
@@ -148,8 +148,8 @@ namespace NewYearPresents.Tests
         [DataRow("Соевый соус классический 0,500/20шт")]
         public void GetWeightAndPiecesFromStringTest11(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.5f && x.Item2 == 20)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.5f * 20)
             {
                 Assert.IsTrue(true);
             }
@@ -160,8 +160,8 @@ namespace NewYearPresents.Tests
         [DataRow("Сахарная пудра 50г/120шт")]
         public void GetWeightAndPiecesFromStringTest12(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.05f && x.Item2 == 120)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.05f * 120)
             {
                 Assert.IsTrue(true);
             }
@@ -172,8 +172,8 @@ namespace NewYearPresents.Tests
         [DataRow("Паштет печеночный со слив.маслом с опен-крышкой 0,120/42шт / кублей")]
         public void GetWeightAndPiecesFromStringTest13(string source)
         {
-            var x = GetWeightAndPiecesFromString(source);
-            if (x.Item1 == 0.12f && x.Item2 == 42)
+            var x = GetTotalWeightFromString(source);
+            if (x == 0.12f * 42)
             {
                 Assert.IsTrue(true);
             }

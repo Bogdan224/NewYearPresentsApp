@@ -63,7 +63,7 @@ namespace NewYearPresents.App
                 throw new InvalidOperationException("Не найдена строка подключения в конфигурации");
             }
 
-            services.AddDataManager(config.Database.ConnectionString!);
+            services.AddAppDbContext(config.Database.ConnectionString!);
             services.AddTransient<XlsmParser>();
             services.AddSingleton<Company>(config.Company);
 

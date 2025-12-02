@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewYearPresents.App.ViewModels
+namespace NewYearPresents.Models.Entities
 {
-    public class StorageProductViewModel
+    public class Packaging : BaseEntity
     {
-
+        public string? Image { get; set; } = null;
     }
 }

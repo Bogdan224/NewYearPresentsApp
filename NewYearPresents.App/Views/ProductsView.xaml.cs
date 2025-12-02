@@ -1,5 +1,6 @@
 ﻿using NewYearPresents.App.ViewModels;
 using NewYearPresents.Domain;
+using NewYearPresents.Models.Extentions;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,13 +15,13 @@ namespace NewYearPresents.App.Views
         private int shownProducts = 0;
         private const int shownProductsConst = 50;
 
-        private DataManager _dataManager;
+        private AppDbContext _context;
 
         internal BindingList<ProductViewModel> Products { get; set; }
 
-        public ProductsView(DataManager dataManager, ProductViewModel productViewModel)
+        public ProductsView(AppDbContext context, ProductViewModel productViewModel)
         {
-            _dataManager = dataManager;
+            _context = context;
             Products = new BindingList<ProductViewModel>();
 
             InitializeComponent();
@@ -41,7 +42,7 @@ namespace NewYearPresents.App.Views
         private async void UpdateDataGrid()
         {
             if (Products.Count != 0) Products.Clear();
-            foreach (var product in await _dataManager.Products.GetProductsAsync())
+            foreach (var product in await _context.GetProductsBoxesAsync())
             {
                 Products.Add(new ProductViewModel(product));
             }

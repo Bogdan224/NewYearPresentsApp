@@ -1,15 +1,16 @@
-﻿namespace NewYearPresents.Models.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NewYearPresents.Models.Entities
 {
     public class Product : BaseEntity
     {
-        public float Price30K { get; set; }
-        public float Price60K { get; set; }
-        public float Price100K { get; set; }
-        public float Price150K { get; set; }
         public string? Image { get; set; } = null;
         public int ExpirationDate { get; set; }
         public float Weight { get; set; }
-        public int Pieces { get; set; }
 
         public int ProductTypeId { get; set; }
         public ProductType? ProductType { get; set; }

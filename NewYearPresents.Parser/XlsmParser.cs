@@ -21,7 +21,7 @@ namespace NewYearPresents.Parser
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public ParsedDataDTO InitialParse(string filename)
+        public ParsedDTO ParseProducts(string filename)
         {
             using (ExcelPackage package = new ExcelPackage(_sourceDirectory + filename))
             {
@@ -34,9 +34,10 @@ namespace NewYearPresents.Parser
 
                 var productsTmp = new List<object>();
 
-                List<Product> products = new List<Product>();
+                List<ProductsBox> productsBoxes = new List<ProductsBox>();
                 List<Manufacturer> manufacturers = new List<Manufacturer>();
                 List<ProductType> productTypes = new List<ProductType>();
+                List<Product> products = new List<Product>();
                 productTypes.Add(new ProductType() { Name = null });
                 ProductType currentProductType = new ProductType();
 
@@ -100,36 +101,43 @@ namespace NewYearPresents.Parser
                     }
                     if (productsTmp.Count == 6)
                     {
+                        var name = productsTmp[0].ToString().NormalizeText();
+
                         var product = new Product()
                         {
-                            Name = productsTmp[0].ToString().NormalizeText(),
-                            Price30K = Convert.ToSingle(productsTmp[1]),
-                            Price60K = Convert.ToSingle(productsTmp[2]),
-                            Price100K = Convert.ToSingle(productsTmp[3]),
-                            Price150K = Convert.ToSingle(productsTmp[4]) != 0 ? Convert.ToSingle(productsTmp[4]) : Convert.ToSingle(productsTmp[3]),
-                            //Image = productsTmp[5].ToString(),
+                            Name = name,
                             ExpirationDate = Convert.ToInt32(productsTmp[5]),
                             Manufacturer = manufacturers.Last(),
                             ProductType = currentProductType
                         };
-                        (float weight, int pieces) = GetWeightAndPiecesFromString(product.Name);
-                        product.Weight = weight;
-                        product.Pieces = pieces;
 
                         products.Add(product);
+
+                        var productBox = new ProductsBox()
+                        {
+                            Product = product,
+                            Price30K = Convert.ToSingle(productsTmp[1]),
+                            Price60K = Convert.ToSingle(productsTmp[2]),
+                            Price100K = Convert.ToSingle(productsTmp[3]),
+                            Price150K = Convert.ToSingle(productsTmp[4]) != 0 ? Convert.ToSingle(productsTmp[4]) : Convert.ToSingle(productsTmp[3]),
+                            //Image = productsTmp[5].ToString()
+                            TotalWeight = GetTotalWeightFromString(name)
+                        };
+
+                        productsBoxes.Add(productBox);
                     }
                     if (productsTmp.Count > 0)
                         productsTmp.Clear();
                 }
 
-                return new ParsedDataDTO() { Products = products, ProductTypes = productTypes, Manufacturers = manufacturers };
+                return new ParsedDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
             }
         }
 
-        protected (float, int) GetWeightAndPiecesFromString(string source)
+        protected float GetTotalWeightFromString(string source)
         {
             if (string.IsNullOrEmpty(source))
-                return (0.0f, 0);
+                return 0.0f;
 
             float weight = 0.0f;
             int pieces = 1;
@@ -154,7 +162,7 @@ namespace NewYearPresents.Parser
                             try
                             {
                                 weight = source.GetFloat(lastIndex);
-                                return (weight, pieces);
+                                return weight * pieces;
                             }
                             catch { }
                         }
@@ -177,7 +185,7 @@ namespace NewYearPresents.Parser
                         {
                             weight = 0;
                         }
-                        return (weight, pieces);
+                        return weight * pieces;
                     }
                 }
                 else
@@ -212,7 +220,7 @@ namespace NewYearPresents.Parser
                 int lastIndex = source.LastIndexOf("г/");
                 weight = source.GetFloat(lastIndex) / 1000;
             }
-            return (weight, pieces);
+            return weight * pieces;
         }
     }
 }

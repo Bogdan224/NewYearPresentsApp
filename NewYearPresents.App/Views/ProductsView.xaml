@@ -53,7 +53,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="auto"
+                <DataGridTextColumn Width="*"
                                     Binding="{Binding Path=ProductTypeName}"
                                     Foreground="Black"
                                     IsReadOnly="True"

@@ -2,6 +2,6 @@
 {
     public class ProductType : BaseEntity
     {
-        public ICollection<Product>? Products { get; set; }
+        public ICollection<ProductsBox>? Products { get; set; }
     }
 }

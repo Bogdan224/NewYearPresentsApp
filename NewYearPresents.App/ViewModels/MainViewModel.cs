@@ -28,12 +28,12 @@ namespace NewYearPresents.App.ViewModels
             }
         }
 
-        public MainViewModel(XlsmParser xlsmParser, DataManager dataManager, Company company)
+        public MainViewModel(XlsmParser xlsmParser, AppDbContext context, Company company)
         {
             Company = company;
 
-            ProductsView = new ProductsView(dataManager, new ProductViewModel());
-            ParsingView = new ParsingView(xlsmParser, dataManager);
+            ProductsView = new ProductsView(context, new ProductViewModel());
+            ParsingView = new ParsingView(xlsmParser, context);
 
             CurrentView = ProductsView;
 
