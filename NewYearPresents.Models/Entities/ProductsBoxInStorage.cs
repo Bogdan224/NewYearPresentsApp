@@ -11,6 +11,8 @@ namespace NewYearPresents.Models.Entities
     {
         public int Id { get; set; }
 
+        public int Count { get;set; }
+
         public int ProductsBoxId { get; set; }
         [NotNull] public ProductsBox ProductsBox { get; set; }
     }

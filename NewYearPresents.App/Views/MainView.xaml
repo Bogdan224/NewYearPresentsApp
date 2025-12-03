@@ -13,7 +13,7 @@
     <Window.Resources>
         <converters:MathConverter x:Key="MathConverter"></converters:MathConverter>
     </Window.Resources>
-
+    
     <Border>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -53,21 +53,21 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="0 20"
-                    x:Name="SearchTextBox"
+                    Name="SearchTextBox"
                     Width="{Binding ElementName=MainWindow,
                     Path=ActualWidth,
                     Converter={StaticResource MathConverter},
                     ConverterParameter=(@VALUE/4)}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Cursor="">
                 <RadioButton
                     Content="Каталог"
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
                     FontSize="16"
-                    Command="{Binding Path=ProductsViewCommand}"
+                    Command="{Binding Path=CatalogViewCommand}"
                     IsChecked="True" />
 
                 <RadioButton
@@ -76,7 +76,7 @@
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
                     FontSize="16" 
-                    Visibility="Hidden" />
+                    Command="{Binding Path=StorageViewCommand}"/>
 
                 <RadioButton
                     Content="Заказы"

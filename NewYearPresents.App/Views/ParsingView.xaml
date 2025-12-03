@@ -10,6 +10,6 @@
         <Button
             Width="120" Content="Спарсить"
             Background="White" BorderBrush="Black"
-            Foreground="Black" Click="Parse_Click" />
+            Foreground="Black" Command="{Binding Path=ParseCommand}" />
     </Grid>
 </UserControl>

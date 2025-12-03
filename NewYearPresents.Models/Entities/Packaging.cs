@@ -9,5 +9,6 @@ namespace NewYearPresents.Models.Entities
     public class Packaging : BaseEntity
     {
         public string? Image { get; set; } = null;
+        public float MaxWeight { get; set; }
     }
 }

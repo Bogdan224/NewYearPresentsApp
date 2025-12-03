@@ -21,117 +21,119 @@ namespace NewYearPresents.Parser
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public ParsedDTO ParseProducts(string filename)
+        public async Task<ParsedDTO> ParseProductsAsync(string filename)
         {
-            using (ExcelPackage package = new ExcelPackage(_sourceDirectory + filename))
+            ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
+            using var package = new ExcelPackage();
+
+            await package.LoadAsync(_sourceDirectory + filename);
+
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+
+            // Чтение данных из ячеек
+            int rowCount = worksheet.Dimension.Rows;
+            int columnCount = worksheet.Dimension.Columns - 1;
+
+            var productsTmp = new List<object>();
+
+            List<ProductsBox> productsBoxes = new List<ProductsBox>();
+            List<Manufacturer> manufacturers = new List<Manufacturer>();
+            List<ProductType> productTypes = new List<ProductType>();
+            List<Product> products = new List<Product>();
+            productTypes.Add(new ProductType() { Name = null });
+            ProductType currentProductType = new ProductType();
+
+            for (int i = 6; i <= rowCount; i++)
             {
-                ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-
-                // Чтение данных из ячеек
-                int rowCount = worksheet.Dimension.Rows;
-                int columnCount = worksheet.Dimension.Columns - 1;
-
-                var productsTmp = new List<object>();
-
-                List<ProductsBox> productsBoxes = new List<ProductsBox>();
-                List<Manufacturer> manufacturers = new List<Manufacturer>();
-                List<ProductType> productTypes = new List<ProductType>();
-                List<Product> products = new List<Product>();
-                productTypes.Add(new ProductType() { Name = null });
-                ProductType currentProductType = new ProductType();
-
-                for (int i = 6; i <= rowCount; i++)
+                for (int j = 1; j <= columnCount; j++)
                 {
-                    for (int j = 1; j <= columnCount; j++)
+                    var value = worksheet.Cells[i, j].Value;
+                    if (j == 1 && worksheet.Cells[i, 8].Value != null)
+                        continue;
+                    if (j == 2 && value is null)
+                        break;
+                    if (j == 6 && value is null)
+                        productsTmp.Add(0);
+                    if (j == 7 && worksheet.Cells[i, j].Picture.Exists)
+                        productsTmp.Add(worksheet.Cells[i, j].Picture.Get().GetImageBytes());
+                    if (value != null)
                     {
-                        var value = worksheet.Cells[i, j].Value;
-                        if (j == 1 && worksheet.Cells[i, 8].Value != null)
-                            continue;
-                        if (j == 2 && value is null)
-                            break;
-                        if (j == 6 && value is null)
-                            productsTmp.Add(0);
-                        if (j == 7 && worksheet.Cells[i, j].Picture.Exists)
-                            productsTmp.Add(worksheet.Cells[i, j].Picture.Get().GetImageBytes());
-                        if (value != null)
+                        //Проверка на производителя
+                        if (j == 1 && worksheet.Cells[i, 8].Value == null)
                         {
-                            //Проверка на производителя
-                            if (j == 1 && worksheet.Cells[i, 8].Value == null)
+                            //Если строки сгруппированы, то считывает
+                            if (worksheet.Row(i).OutlineLevel == 0)
                             {
-                                //Если строки сгруппированы, то считывает
-                                if (worksheet.Row(i).OutlineLevel == 0)
+                                manufacturers.Add(new Manufacturer() { Name = value.ToString().NormalizeText() });
+                                if (worksheet.Cells[i + 1, 8].Value != null)
+                                    currentProductType = productTypes[0];
+                            }
+                            else
+                            {
+                                if (worksheet.Cells[i + 1, 8].Value != null)
                                 {
-                                    manufacturers.Add(new Manufacturer() { Name = value.ToString().NormalizeText() });
-                                    if (worksheet.Cells[i + 1, 8].Value != null)
-                                        currentProductType = productTypes[0];
-                                }
-                                else
-                                {
-                                    if (worksheet.Cells[i + 1, 8].Value != null)
+                                    var productType = new ProductType() { Name = value.ToString().NormalizeText() };
+                                    if (!productTypes.Any(x => x.Name == productType.Name))
                                     {
-                                        var productType = new ProductType() { Name = value.ToString().NormalizeText() };
-                                        if (!productTypes.Any(x => x.Name == productType.Name))
-                                        {
-                                            productTypes.Add(productType);
-                                            currentProductType = productType;
-                                        }
-                                        else
-                                        {
-                                            currentProductType = productTypes.Find(x => x.Name == productType.Name)!;
-                                        }
+                                        productTypes.Add(productType);
+                                        currentProductType = productType;
+                                    }
+                                    else
+                                    {
+                                        currentProductType = productTypes.Find(x => x.Name == productType.Name)!;
                                     }
                                 }
-                                break;
                             }
-
-                            if (j == 8)
-                            {
-                                string[] val = value.ToString()!.Split();
-                                if (val[1] == "суток")
-                                    value = Convert.ToInt32(val[0]) / 30;
-                                else
-                                    value = val[0];
-                                productsTmp.Add(value);
-                                break;
-                            }
-
-                            productsTmp.Add(value);
+                            break;
                         }
-                    }
-                    if (productsTmp.Count == 6)
-                    {
-                        var name = productsTmp[0].ToString().NormalizeText();
 
-                        var product = new Product()
+                        if (j == 8)
                         {
-                            Name = name,
-                            ExpirationDate = Convert.ToInt32(productsTmp[5]),
-                            Manufacturer = manufacturers.Last(),
-                            ProductType = currentProductType
-                        };
+                            string[] val = value.ToString()!.Split();
+                            if (val[1] == "суток")
+                                value = Convert.ToInt32(val[0]) / 30;
+                            else
+                                value = val[0];
+                            productsTmp.Add(value);
+                            break;
+                        }
 
-                        products.Add(product);
-
-                        var productBox = new ProductsBox()
-                        {
-                            Product = product,
-                            Price30K = Convert.ToSingle(productsTmp[1]),
-                            Price60K = Convert.ToSingle(productsTmp[2]),
-                            Price100K = Convert.ToSingle(productsTmp[3]),
-                            Price150K = Convert.ToSingle(productsTmp[4]) != 0 ? Convert.ToSingle(productsTmp[4]) : Convert.ToSingle(productsTmp[3]),
-                            //Image = productsTmp[5].ToString()
-                            TotalWeight = GetTotalWeightFromString(name)
-                        };
-
-                        productsBoxes.Add(productBox);
+                        productsTmp.Add(value);
                     }
-                    if (productsTmp.Count > 0)
-                        productsTmp.Clear();
                 }
+                if (productsTmp.Count == 6)
+                {
+                    var name = productsTmp[0].ToString().NormalizeText();
 
-                return new ParsedDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
+                    var product = new Product()
+                    {
+                        Name = name,
+                        ExpirationDate = Convert.ToInt32(productsTmp[5]),
+                        Manufacturer = manufacturers.Last(),
+                        ProductType = currentProductType
+                    };
+
+                    products.Add(product);
+
+                    var productBox = new ProductsBox()
+                    {
+                        Product = product,
+                        Price30K = Convert.ToSingle(productsTmp[1]),
+                        Price60K = Convert.ToSingle(productsTmp[2]),
+                        Price100K = Convert.ToSingle(productsTmp[3]),
+                        Price150K = Convert.ToSingle(productsTmp[4]) != 0 ? Convert.ToSingle(productsTmp[4]) : Convert.ToSingle(productsTmp[3]),
+                        //Image = productsTmp[5].ToString()
+                        TotalWeight = GetTotalWeightFromString(name)
+                    };
+
+                    productsBoxes.Add(productBox);
+                }
+                if (productsTmp.Count > 0)
+                    productsTmp.Clear();
             }
+
+            return new ParsedDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
+
         }
 
         protected float GetTotalWeightFromString(string source)
@@ -166,7 +168,7 @@ namespace NewYearPresents.Parser
                             }
                             catch { }
                         }
-                        
+
                     }
                 }
                 else if (source.Contains('/'))

@@ -1,20 +1,15 @@
 ﻿using NewYearPresents.App.Core;
 using NewYearPresents.Models.Entities;
 
-namespace NewYearPresents.App.ViewModels
+namespace NewYearPresents.App.ViewModels.Entities
 {
-    public class ProductViewModel : ObservableObject
+    public class ProductsBoxViewModel : ObservableObject
     {
-        private readonly ProductsBox _productBox;
+        private ProductsBox _productBox;
 
-        public ProductViewModel(ProductsBox p)
+        public ProductsBoxViewModel(ProductsBox p)
         {
             _productBox = p;
-        }
-
-        public ProductViewModel()
-        {
-            _productBox = new ProductsBox();
         }
 
         public int Id
@@ -109,6 +104,12 @@ namespace NewYearPresents.App.ViewModels
         public float TotalWeight
         {
             get { return _productBox.TotalWeight; }
+            set
+            {
+                if (_productBox.TotalWeight == value) return;
+                _productBox.TotalWeight = value;
+                OnPropertyChanged("TotalWeight");
+            }
         }
 
         public int ExpirationDate

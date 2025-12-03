@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NewYearPresents.App.Infrastructure;
 using NewYearPresents.App.ViewModels;
 using NewYearPresents.App.Views;
-using NewYearPresents.Domain;
+using NewYearPresents.Models.Extentions;
 using NewYearPresents.Parser;
 using System.IO;
 using System.Windows;
@@ -15,8 +15,6 @@ namespace NewYearPresents.App
     /// </summary>
     public partial class App : Application
     {
-        private IServiceProvider _serviceProvider;
-
         protected override void OnStartup(StartupEventArgs e)
         {
             try
@@ -31,14 +29,7 @@ namespace NewYearPresents.App
                 var serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection, configurationBuilder.Build());
 
-                _serviceProvider = serviceCollection.BuildServiceProvider();
-
-                //StringBuilder builder = new StringBuilder();
-                //foreach (var service in _serviceProvider.GetServices<object>())
-                //{
-                //    builder.Append(service.ToString() + "\n\n");
-                //}
-                //MessageBox.Show(builder.ToString());
+                var _serviceProvider = serviceCollection.BuildServiceProvider();
 
                 var mainWindow = _serviceProvider.GetRequiredService<MainView>();
                 mainWindow.Show();
@@ -47,7 +38,6 @@ namespace NewYearPresents.App
             }
             catch (Exception ex)
             {
-                // Обработка ошибок инициализации
                 MessageBox.Show($"Ошибка запуска приложения: {ex.Message}", "Ошибка",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -67,6 +57,9 @@ namespace NewYearPresents.App
             services.AddTransient<XlsmParser>();
             services.AddSingleton<Company>(config.Company);
 
+            services.AddTransient<CatalogViewModel>();
+            services.AddTransient<StorageViewModel>();
+            services.AddTransient<ParsingViewModel>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainView>();
         }

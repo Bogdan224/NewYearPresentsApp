@@ -27,6 +27,27 @@ namespace NewYearPresents.Domain.Migrations
                 name: "Packaging",
                 newName: "Packagings");
 
+            migrationBuilder.AddColumn<float>(
+                name: "TotalPrice",
+                table: "Presents",
+                type: "real",
+                nullable: false,
+                defaultValue: 0f);
+
+            migrationBuilder.AddColumn<float>(
+                name: "TotalWeight",
+                table: "Presents",
+                type: "real",
+                nullable: false,
+                defaultValue: 0f);
+
+            migrationBuilder.AddColumn<float>(
+                name: "MaxWeight",
+                table: "Packagings",
+                type: "real",
+                nullable: false,
+                defaultValue: 0f);
+
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Packagings",
                 table: "Packagings",
@@ -73,6 +94,7 @@ namespace NewYearPresents.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Count = table.Column<int>(type: "int", nullable: false),
                     ProductsBoxId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -242,6 +264,18 @@ namespace NewYearPresents.Domain.Migrations
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Packagings",
+                table: "Packagings");
+
+            migrationBuilder.DropColumn(
+                name: "TotalPrice",
+                table: "Presents");
+
+            migrationBuilder.DropColumn(
+                name: "TotalWeight",
+                table: "Presents");
+
+            migrationBuilder.DropColumn(
+                name: "MaxWeight",
                 table: "Packagings");
 
             migrationBuilder.RenameTable(

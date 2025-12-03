@@ -1,3 +1,5 @@
+using NewYearPresents.Models.Extentions;
+
 namespace NewYearPresents.Domain;
 
 public class Program

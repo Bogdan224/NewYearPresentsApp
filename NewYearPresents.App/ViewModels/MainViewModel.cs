@@ -8,38 +8,47 @@ namespace NewYearPresents.App.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        public Company Company { get; set; }
+        public Company Company { get; private set; }
 
-        public RelayCommand ProductsViewCommand { get; set; }
-        public RelayCommand ParsingViewCommand { get; set; }
+        public RelayCommand CatalogViewCommand { get; private set; }
+        public RelayCommand ParsingViewCommand { get; private set; }
+        public RelayCommand StorageViewCommand { get; private set; }
 
-        public ProductsView ProductsView { get; set; }
-        public ParsingView ParsingView { get; set; }
+        public CatalogView CatalogView { get; private set; }
+        public ParsingView ParsingView { get; private set; }
+        public StorageView StorageView { get; private set; }
 
         public object? _currentView;
 
         public object? CurrentView
         {
             get { return _currentView; }
-            set
+            private set
             {
                 _currentView = value;
                 OnPropertyChanged();
             }
         }
 
-        public MainViewModel(XlsmParser xlsmParser, AppDbContext context, Company company)
+        public MainViewModel(Company company, CatalogViewModel catalogViewModel, StorageViewModel storageViewModel, ParsingViewModel parsingViewModel)
         {
             Company = company;
 
-            ProductsView = new ProductsView(context, new ProductViewModel());
-            ParsingView = new ParsingView(xlsmParser, context);
+            CatalogView = new CatalogView(catalogViewModel);
+            StorageView = new StorageView(storageViewModel);
+            ParsingView = new ParsingView(parsingViewModel);
 
-            CurrentView = ProductsView;
 
-            ProductsViewCommand = new RelayCommand(o =>
+            CurrentView = CatalogView;
+
+            CatalogViewCommand = new RelayCommand(o =>
             {
-                CurrentView = ProductsView;
+                CurrentView = CatalogView;
+            });
+
+            StorageViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = StorageView;
             });
 
             ParsingViewCommand = new RelayCommand(o =>

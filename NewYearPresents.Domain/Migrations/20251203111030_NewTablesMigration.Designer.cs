@@ -12,7 +12,7 @@ using NewYearPresents.Domain;
 namespace NewYearPresents.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251201145918_NewTablesMigration")]
+    [Migration("20251203111030_NewTablesMigration")]
     partial class NewTablesMigration
     {
         /// <inheritdoc />
@@ -74,6 +74,9 @@ namespace NewYearPresents.Domain.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("MaxWeight")
+                        .HasColumnType("real");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,6 +116,12 @@ namespace NewYearPresents.Domain.Migrations
 
                     b.Property<int?>("PackagingId")
                         .HasColumnType("int");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TotalWeight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -300,6 +309,9 @@ namespace NewYearPresents.Domain.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductsBoxId")
                         .HasColumnType("int");

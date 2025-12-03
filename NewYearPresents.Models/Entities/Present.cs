@@ -10,5 +10,7 @@ namespace NewYearPresents.Models.Entities
     {
         public int Id { get; set; }
         public Packaging? Packaging { get; set; }
+        public float TotalWeight { get; set; }
+        public float TotalPrice { get; set; }
     }
 }
