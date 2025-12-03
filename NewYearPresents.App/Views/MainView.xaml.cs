@@ -13,5 +13,10 @@ namespace NewYearPresents.App.Views
             InitializeComponent();
             DataContext = mainView;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Поиск пока недоступен!");
+        }
     }
 }

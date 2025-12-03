@@ -29,7 +29,7 @@ namespace NewYearPresents.App.Views
         {
             try
             {
-                throw new NotImplementedException("Сортировка пока недоступна!");
+                
             }
             catch (Exception ex)
             {

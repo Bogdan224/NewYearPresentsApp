@@ -58,6 +58,9 @@
                     Path=ActualWidth,
                     Converter={StaticResource MathConverter},
                     ConverterParameter=(@VALUE/4)}" />
+                <Button Margin="20 0"
+                    Background="White" BorderBrush="Black"
+                    Content="Поиск" Foreground="Black" Click="Button_Click"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Cursor="">
@@ -84,10 +87,10 @@
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
                     FontSize="16" 
-                    Visibility="Hidden"/>
+                    Visibility="Collapsed"/>
 
                 <RadioButton
-                    Content="Парсинг данных"
+                    Content="Загрузить данные"
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"

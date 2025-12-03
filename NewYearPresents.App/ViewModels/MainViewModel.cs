@@ -3,6 +3,7 @@ using NewYearPresents.App.Infrastructure;
 using NewYearPresents.App.Views;
 using NewYearPresents.Domain;
 using NewYearPresents.Parser;
+using System.Windows;
 
 namespace NewYearPresents.App.ViewModels
 {
@@ -38,21 +39,23 @@ namespace NewYearPresents.App.ViewModels
             StorageView = new StorageView(storageViewModel);
             ParsingView = new ParsingView(parsingViewModel);
 
-
             CurrentView = CatalogView;
 
             CatalogViewCommand = new RelayCommand(o =>
             {
+                if (CurrentView == CatalogView) return;
                 CurrentView = CatalogView;
             });
 
             StorageViewCommand = new RelayCommand(o =>
             {
+                if (CurrentView == StorageView) return;
                 CurrentView = StorageView;
             });
 
             ParsingViewCommand = new RelayCommand(o =>
             {
+                if (CurrentView == ParsingView) return;
                 CurrentView = ParsingView;
             });
         }

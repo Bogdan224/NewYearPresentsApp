@@ -117,6 +117,17 @@ namespace NewYearPresents.App.ViewModels.Entities
             }
         }
 
+        public float UnitWeight
+        {
+            get { return _productsBoxInStorage.ProductsBox.Product.Weight; }
+            set
+            {
+                if (_productsBoxInStorage.ProductsBox.Product.Weight == value) return;
+                _productsBoxInStorage.ProductsBox.Product.Weight = value;
+                OnPropertyChanged("TotalWeight");
+            }
+        }
+
         public int ExpirationDate
         {
             get { return _productsBoxInStorage.ProductsBox.Product.ExpirationDate; }

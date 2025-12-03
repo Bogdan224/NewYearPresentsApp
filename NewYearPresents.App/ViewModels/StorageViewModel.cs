@@ -21,6 +21,13 @@ namespace NewYearPresents.App.ViewModels
         public ObservableCollection<ProductsBoxInStorageViewModel> ProductsBoxesInStorage { get; set; }
         public ObservableCollection<PackagingInStorageViewModel> PackagingsInStorage { get; set; }
 
+        private enum CurrentObjectInStorage
+        {
+            ProductBox,
+            Packaging
+        }
+        private CurrentObjectInStorage currentObject;
+
         public RelayCommand ProductsBoxesDataGridRelay { get; private set; }
         public RelayCommand PackagingsDataGridRelay { get; private set; }
 
@@ -32,34 +39,38 @@ namespace NewYearPresents.App.ViewModels
             _context = context;
             ProductsBoxesInStorage = new();
             PackagingsInStorage = new();
+            currentObject = CurrentObjectInStorage.ProductBox;
 
             ProductsBoxesDataGridRelay = new(async ex =>
             {
-                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null) return;
-                PackagingsDataGrid.Visibility = Visibility.Collapsed;
-                ProductsBoxesDataGrid.Visibility = Visibility.Visible;
+                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null || currentObject == CurrentObjectInStorage.ProductBox) return;
+                (ProductsBoxesDataGrid.Visibility, PackagingsDataGrid.Visibility) = (PackagingsDataGrid.Visibility, ProductsBoxesDataGrid.Visibility);
 
                 await UpdateProductsBoxesInStorageAsync();
-                ProductsBoxesDataGrid.DataContext = new ProductsBoxInStorageViewModel(new());
                 ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
+
+                currentObject = CurrentObjectInStorage.ProductBox;
             });
 
             PackagingsDataGridRelay = new(async ex =>
             {
-                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null) return;
-                ProductsBoxesDataGrid.Visibility = Visibility.Collapsed;
-                PackagingsDataGrid.Visibility = Visibility.Visible;
+                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null || currentObject == CurrentObjectInStorage.Packaging) return;
+                (ProductsBoxesDataGrid.Visibility, PackagingsDataGrid.Visibility) = (PackagingsDataGrid.Visibility, ProductsBoxesDataGrid.Visibility);
 
                 await UpdatePackagingsInStorageAsync();
-                PackagingsDataGrid.DataContext = new PackagingInStorageViewModel(new());
                 PackagingsDataGrid.ItemsSource = PackagingsInStorage;
+
+                currentObject = CurrentObjectInStorage.Packaging;
             }); 
         }
 
         public void AddDataGrids(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
         {
             ProductsBoxesDataGrid = productsDataGrid;
+            ProductsBoxesDataGrid.DataContext = new ProductsBoxInStorageViewModel(new());
+
             PackagingsDataGrid = packagingsDataGrid;
+            PackagingsDataGrid.DataContext = new PackagingInStorageViewModel(new());
 
             ProductsBoxesDataGridRelay.Execute(this);
         }

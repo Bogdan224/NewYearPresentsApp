@@ -43,8 +43,7 @@
             Sorting="StorageDataGrid_Sorting"
             CanUserResizeRows="False"
             SelectionUnit="Cell"
-            Height="auto"
-            Visibility="Collapsed">
+            Height="auto" >
             <DataGrid.Columns>
                 <DataGridTextColumn Width="70"
                         Binding="{Binding Path=Id}"
@@ -56,7 +55,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="3*"
+                <DataGridTextColumn Width="4*"
                         Binding="{Binding Path=Name}"
                         Foreground="Black"
                         CanUserSort="True">
@@ -66,7 +65,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn Width="3*"
                         Binding="{Binding Path=ManufacturerName}"
                         Foreground="Black"
                         IsReadOnly="True"
@@ -77,7 +76,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn Width="3*"
                         Binding="{Binding Path=ProductTypeName}"
                         Foreground="Black"
                         IsReadOnly="True"
@@ -89,7 +88,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=Price30K}"
+                    Width="*" Binding="{Binding Path=Price30K}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -99,7 +98,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=TotalWeight}"
+                    Width="*" Binding="{Binding Path=TotalWeight}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -109,7 +108,17 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=ExpirationDate}"
+                    Width="*" Binding="{Binding Path=UnitWeight}"
+                    Foreground="Black" IsReadOnly="True"
+                    CanUserSort="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock 
+                            Foreground="Black" Text="Единичный вес (г)" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn 
+                    Width="*" Binding="{Binding Path=ExpirationDate}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -119,7 +128,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=Count}"
+                    Width="*" Binding="{Binding Path=Count}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -137,20 +146,21 @@
             VerticalAlignment="Top" CanUserReorderColumns="False"
             CanUserResizeColumns="True" CanUserSortColumns="True"
             Sorting="StorageDataGrid_Sorting" CanUserResizeRows="False"
-            SelectionUnit="Cell" Height="auto">
+            SelectionUnit="Cell" Height="auto" 
+            Visibility="Collapsed">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="70"
             Binding="{Binding Path=Id}"
             IsReadOnly="True"
             Foreground="Black">
                     <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-           Text="" />
+                        <TextBlock 
+                            Foreground="Black" Text="" />
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="3*" Binding="{Binding Path=Name}"
+                    Width="4*" Binding="{Binding Path=Name}"
                     Foreground="Black" CanUserSort="True">
                     <DataGridTextColumn.Header>
                         <TextBlock 
@@ -159,7 +169,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=MaxWeight}"
+                    Width="*" Binding="{Binding Path=MaxWeight}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -169,7 +179,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn 
-                    Width="auto" Binding="{Binding Path=Count}"
+                    Width="*" Binding="{Binding Path=Count}"
                     Foreground="Black" IsReadOnly="True"
                     CanUserSort="True">
                     <DataGridTextColumn.Header>
