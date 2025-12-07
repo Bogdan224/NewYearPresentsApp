@@ -19,7 +19,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public int Id
         {
-            get { return _productsBoxInStorage.ProductsBox.Id; }
+            get { return _productsBoxInStorage.Id; }
         }
 
         public string? Name
@@ -60,7 +60,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public float Price30K
         {
-            get { return _productsBoxInStorage.ProductsBox.Price30K; }
+            get { return _productsBoxInStorage.ProductsBox.Price30K * Count; }
             set
             {
                 if (_productsBoxInStorage.ProductsBox.Price30K == value)
@@ -72,7 +72,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public float Price60K
         {
-            get { return _productsBoxInStorage.ProductsBox.Price60K; }
+            get { return _productsBoxInStorage.ProductsBox.Price60K * Count; }
             set
             {
                 if (_productsBoxInStorage.ProductsBox.Price60K == value)
@@ -84,7 +84,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public float Price100K
         {
-            get { return _productsBoxInStorage.ProductsBox.Price100K; }
+            get { return _productsBoxInStorage.ProductsBox.Price100K * Count; }
             set
             {
                 if (_productsBoxInStorage.ProductsBox.Price100K == value)
@@ -96,7 +96,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public float Price150K
         {
-            get { return _productsBoxInStorage.ProductsBox.Price150K; }
+            get { return _productsBoxInStorage.ProductsBox.Price150K * Count; }
             set
             {
                 if (_productsBoxInStorage.ProductsBox.Price150K == value)
@@ -108,7 +108,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 
         public float TotalWeight
         {
-            get { return _productsBoxInStorage.ProductsBox.TotalWeight; }
+            get { return _productsBoxInStorage.ProductsBox.TotalWeight * Count; }
             set
             {
                 if (_productsBoxInStorage.ProductsBox.TotalWeight == value) return;

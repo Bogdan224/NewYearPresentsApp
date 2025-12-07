@@ -123,5 +123,10 @@ namespace NewYearPresents.App.ViewModels.Entities
                 OnPropertyChanged("ExpirationDate");
             }
         }
+
+        public static implicit operator ProductsBox(ProductsBoxViewModel productsBox)
+        {
+            return productsBox._productBox;
+        }
     }
 }

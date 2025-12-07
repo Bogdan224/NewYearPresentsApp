@@ -14,14 +14,14 @@ namespace NewYearPresents.App.ViewModels
 
         public string? Filename { get; set; }
  
-        public RelayCommand ParseCommand { get; private set; }
+        public ButtonCommand ParseCommand { get; private set; }
 
         public ParsingViewModel(XlsmParser parser, AppDbContext context)
         {
             _parser = parser;
             _context = context;
 
-            ParseCommand = new RelayCommand(async x =>
+            ParseCommand = new ButtonCommand(async x =>
             {
                 await ParseXlsmFileAsync();
             });

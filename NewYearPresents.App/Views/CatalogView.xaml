@@ -18,7 +18,6 @@
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="True"
                   CanUserSortColumns="True"
-                  Sorting="ProductDataGrid_Sorting"
                   CanUserResizeRows="False"
                   SelectionUnit="Cell">
             <DataGrid.Columns>

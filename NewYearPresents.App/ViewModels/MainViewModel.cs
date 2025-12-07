@@ -11,9 +11,9 @@ namespace NewYearPresents.App.ViewModels
     {
         public Company Company { get; private set; }
 
-        public RelayCommand CatalogViewCommand { get; private set; }
-        public RelayCommand ParsingViewCommand { get; private set; }
-        public RelayCommand StorageViewCommand { get; private set; }
+        public ButtonCommand CatalogViewCommand { get; private set; }
+        public ButtonCommand ParsingViewCommand { get; private set; }
+        public ButtonCommand StorageViewCommand { get; private set; }
 
         public CatalogView CatalogView { get; private set; }
         public ParsingView ParsingView { get; private set; }
@@ -41,19 +41,19 @@ namespace NewYearPresents.App.ViewModels
 
             CurrentView = CatalogView;
 
-            CatalogViewCommand = new RelayCommand(o =>
+            CatalogViewCommand = new ButtonCommand(o =>
             {
                 if (CurrentView == CatalogView) return;
                 CurrentView = CatalogView;
             });
 
-            StorageViewCommand = new RelayCommand(o =>
+            StorageViewCommand = new ButtonCommand(o =>
             {
                 if (CurrentView == StorageView) return;
                 CurrentView = StorageView;
             });
 
-            ParsingViewCommand = new RelayCommand(o =>
+            ParsingViewCommand = new ButtonCommand(o =>
             {
                 if (CurrentView == ParsingView) return;
                 CurrentView = ParsingView;

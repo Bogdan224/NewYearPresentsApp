@@ -1,5 +1,6 @@
 ﻿using NewYearPresents.App.Core;
 using NewYearPresents.App.ViewModels.Entities;
+using NewYearPresents.App.Views;
 using NewYearPresents.Domain;
 using NewYearPresents.Models.Entities;
 using NewYearPresents.Models.Extentions;
@@ -21,15 +22,14 @@ namespace NewYearPresents.App.ViewModels
         public ObservableCollection<ProductsBoxInStorageViewModel> ProductsBoxesInStorage { get; set; }
         public ObservableCollection<PackagingInStorageViewModel> PackagingsInStorage { get; set; }
 
-        private enum CurrentObjectInStorage
+        public enum CurrentObjectInStorage
         {
             ProductBox,
             Packaging
         }
-        private CurrentObjectInStorage currentObject;
+        public CurrentObjectInStorage CurrentObject { get; set; }
 
-        public RelayCommand ProductsBoxesDataGridRelay { get; private set; }
-        public RelayCommand PackagingsDataGridRelay { get; private set; }
+        public ButtonCommand AddingInStorage { get; private set; }
 
         public DataGrid? ProductsBoxesDataGrid { get; private set; }
         public DataGrid? PackagingsDataGrid { get; private set; }
@@ -39,46 +39,30 @@ namespace NewYearPresents.App.ViewModels
             _context = context;
             ProductsBoxesInStorage = new();
             PackagingsInStorage = new();
-            currentObject = CurrentObjectInStorage.ProductBox;
 
-            ProductsBoxesDataGridRelay = new(async ex =>
+            AddingInStorage = new(async x =>
             {
-                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null || currentObject == CurrentObjectInStorage.ProductBox) return;
-                (ProductsBoxesDataGrid.Visibility, PackagingsDataGrid.Visibility) = (PackagingsDataGrid.Visibility, ProductsBoxesDataGrid.Visibility);
-
-                await UpdateProductsBoxesInStorageAsync();
-                ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
-
-                currentObject = CurrentObjectInStorage.ProductBox;
+                await AddingInStorageAsync();
             });
-
-            PackagingsDataGridRelay = new(async ex =>
-            {
-                if (ProductsBoxesDataGrid == null || PackagingsDataGrid == null || currentObject == CurrentObjectInStorage.Packaging) return;
-                (ProductsBoxesDataGrid.Visibility, PackagingsDataGrid.Visibility) = (PackagingsDataGrid.Visibility, ProductsBoxesDataGrid.Visibility);
-
-                await UpdatePackagingsInStorageAsync();
-                PackagingsDataGrid.ItemsSource = PackagingsInStorage;
-
-                currentObject = CurrentObjectInStorage.Packaging;
-            }); 
         }
 
-        public void AddDataGrids(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
+        public async Task AddDataGrids(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
         {
+            await UpdateStorageContentAsync();
+
             ProductsBoxesDataGrid = productsDataGrid;
             ProductsBoxesDataGrid.DataContext = new ProductsBoxInStorageViewModel(new());
+            ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
 
             PackagingsDataGrid = packagingsDataGrid;
             PackagingsDataGrid.DataContext = new PackagingInStorageViewModel(new());
-
-            ProductsBoxesDataGridRelay.Execute(this);
+            PackagingsDataGrid.ItemsSource = PackagingsInStorage;
         }
 
         private async Task UpdateStorageContentAsync()
         {
             await UpdateProductsBoxesInStorageAsync();
-            await UpdatePackagingsInStorageAsync();
+            await GetPackagingsInStorageAsync();
         }
 
         private async Task UpdateProductsBoxesInStorageAsync()
@@ -91,13 +75,15 @@ namespace NewYearPresents.App.ViewModels
                 {
                     ProductsBoxesInStorage.Add(new ProductsBoxInStorageViewModel(product));
                 }
+                if (ProductsBoxesDataGrid != null)
+                    ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(nameof(this.UpdateProductsBoxesInStorageAsync) + "\n" + e.Message);
             }
         }
-        private async Task UpdatePackagingsInStorageAsync()
+        private async Task GetPackagingsInStorageAsync()
         {
             try
             {
@@ -107,10 +93,24 @@ namespace NewYearPresents.App.ViewModels
                 {
                     PackagingsInStorage.Add(new PackagingInStorageViewModel(packaging));
                 }
+                if (PackagingsDataGrid != null)
+                    PackagingsDataGrid.ItemsSource = PackagingsInStorage;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(nameof(this.GetPackagingsInStorageAsync) + "\n" + e.Message);
+            }
+        }
+
+        private async Task AddingInStorageAsync()
+        {
+            switch (CurrentObject)
+            {
+                case CurrentObjectInStorage.ProductBox:
+                    AddProductsBoxToStorageView view = new(new AddProductsBoxToStorageViewModel(_context));
+                    view.ShowDialog();
+                    await UpdateProductsBoxesInStorageAsync();
+                    break;
             }
         }
 

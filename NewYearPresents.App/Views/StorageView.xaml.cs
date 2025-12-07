@@ -1,4 +1,6 @@
 ﻿using NewYearPresents.App.ViewModels;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace NewYearPresents.App.Views
@@ -11,13 +13,22 @@ namespace NewYearPresents.App.Views
         public StorageView(StorageViewModel storageViewModel)
         {
             InitializeComponent();
-            storageViewModel.AddDataGrids(ProductsBoxesDataGrid, PackagingsDataGrid);
             DataContext = storageViewModel;
         }
 
-        private void StorageDataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            await ((StorageViewModel)DataContext).AddDataGrids(ProductsBoxesDataGrid, PackagingsDataGrid);
+        }
 
+        private void ProductTabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ((StorageViewModel)DataContext).CurrentObject = StorageViewModel.CurrentObjectInStorage.ProductBox;
+        }
+
+        private void PackagingTabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ((StorageViewModel)DataContext).CurrentObject = StorageViewModel.CurrentObjectInStorage.Packaging;
         }
     }
 }

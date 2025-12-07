@@ -24,17 +24,5 @@ namespace NewYearPresents.App.Views
             if(DataContext != null && DataContext is CatalogViewModel catalog)
                 ProductDataGrid = await catalog.UpdateDataGridAsync(ProductDataGrid);
         }
-
-        private void ProductDataGrid_Sorting(object sender, DataGridSortingEventArgs e)
-        {
-            try
-            {
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

@@ -6,192 +6,181 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NewYearPresents.App.Views"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
 
+    <UserControl.Resources>
+        <Style x:Key="DataGridStyle">
+            <Setter Property="DataGrid.AutoGenerateColumns" Value="False"/>
+            <Setter Property="DataGrid.MinRowHeight" Value="20"/>
+            <Setter Property="DataGrid.CanUserAddRows" Value="True"/>
+            <Setter Property="DataGrid.VerticalAlignment" Value="Top"/>
+            <Setter Property="DataGrid.CanUserReorderColumns" Value="False"/>
+            <Setter Property="DataGrid.CanUserResizeColumns" Value="True"/>
+            <Setter Property="DataGrid.CanUserSortColumns" Value="True"/>
+            <Setter Property="DataGrid.CanUserResizeRows" Value="False"/>
+            <!--<Setter Property="DataGrid.SelectionUnit" Value="Cell"/>-->
+            <Setter Property="DataGrid.Height" Value="auto"/>
+            <Setter Property="DataGrid.Height" Value="auto"/>
+        </Style>
+    </UserControl.Resources>
     <StackPanel>
-        <Grid Cursor="">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="1"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <RadioButton
-                Content="Продукты"
-                Style="{StaticResource MenuButtonKey}" Foreground="Black"
-                FontSize="16" BorderBrush="Black"
-                IsChecked="True" Cursor="Hand"
-                Height="30" Command="{Binding Path=ProductsBoxesDataGridRelay}"/>
-            <RadioButton
-                Grid.Column="2" BorderBrush="Black"
-                Style="{StaticResource MenuButtonKey}"
-                Content="Упаковки" Foreground="Black"
-                FontSize="16" Cursor="Hand"
-                Height="30" Command="{Binding Path=PackagingsDataGridRelay}"/>
-        </Grid>
+        <TabControl>
+            <TabItem x:Name="ProductTabItem" Header="Продукты"
+                     GotFocus="ProductTabItem_GotFocus">
+                <TabItem.Content >
+                    <DataGrid 
+    Background="White"
+    x:Name="ProductsBoxesDataGrid"
+    Style="{StaticResource DataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="70"
+                Binding="{Binding Path=Id}"
+                IsReadOnly="True"
+                Foreground="Black">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Foreground="Black"
+               Text="" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Width="4*"
+                Binding="{Binding Path=Name}"
+                Foreground="Black"
+                CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Foreground="Black"
+               Text="Название" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Width="2*"
+                Binding="{Binding Path=ManufacturerName}"
+                Foreground="Black"
+                IsReadOnly="True"
+                CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Foreground="Black"
+               Text="Производитель" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Width="2*"
+                Binding="{Binding Path=ProductTypeName}"
+                Foreground="Black"
+                IsReadOnly="True"
+                CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Foreground="Black"
+               Text="Категория" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=Price30K}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Foreground="Black"
+               Text="Цена (руб)" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=TotalWeight}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+                    Foreground="Black" Text="Общий вес (кг)" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=ExpirationDate}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+                    Foreground="Black" Text="Срок годности (мес)" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=Count}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+                    Foreground="Black" Text="Кол-во" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add New Row" 
+              Command="{Binding AddNewPersonCommand}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="PackagingTabItem" Header="Упаковки"
+                     GotFocus="PackagingTabItem_GotFocus">
+                <TabItem.Content>
+                    <DataGrid 
+    Background="White" x:Name="PackagingsDataGrid"
+    Style="{StaticResource DataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="70"
+    Binding="{Binding Path=Id}"
+    IsReadOnly="True"
+    Foreground="Black">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+                    Foreground="Black" Text="" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="4*" Binding="{Binding Path=Name}"
+            Foreground="Black" CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+                    Foreground="Black" Text="Название" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=MaxWeight}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+        Foreground="Black" Text="Макс. вес (кг)" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn 
+            Width="*" Binding="{Binding Path=Count}"
+            Foreground="Black" IsReadOnly="True"
+            CanUserSort="True">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock 
+        Foreground="Black" Text="Кол-во" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
         <Separator/>
-        <DataGrid 
-            Background="White"
-            x:Name="ProductsBoxesDataGrid"
-            AutoGenerateColumns="False"
-            CanUserAddRows="False"
-            MinRowHeight="20"
-            RowDetailsVisibilityMode="Visible"
-            VerticalAlignment="Top"
-            CanUserReorderColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="True"
-            Sorting="StorageDataGrid_Sorting"
-            CanUserResizeRows="False"
-            SelectionUnit="Cell"
-            Height="auto" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="70"
-                        Binding="{Binding Path=Id}"
-                        IsReadOnly="True"
-                        Foreground="Black">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-                       Text="" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
 
-                <DataGridTextColumn Width="4*"
-                        Binding="{Binding Path=Name}"
-                        Foreground="Black"
-                        CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-                       Text="Название" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Width="3*"
-                        Binding="{Binding Path=ManufacturerName}"
-                        Foreground="Black"
-                        IsReadOnly="True"
-                        CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-                       Text="Производитель" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Width="3*"
-                        Binding="{Binding Path=ProductTypeName}"
-                        Foreground="Black"
-                        IsReadOnly="True"
-                        CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-                       Text="Категория" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=Price30K}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock Foreground="Black"
-                       Text="Цена (руб)" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=TotalWeight}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="Общий вес (кг)" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=UnitWeight}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="Единичный вес (г)" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=ExpirationDate}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="Срок годности (мес)" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=Count}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="Кол-во" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <DataGrid 
-            Background="White" x:Name="PackagingsDataGrid"
-            AutoGenerateColumns="False" CanUserAddRows="False"
-            MinRowHeight="20" RowDetailsVisibilityMode="Visible"
-            VerticalAlignment="Top" CanUserReorderColumns="False"
-            CanUserResizeColumns="True" CanUserSortColumns="True"
-            Sorting="StorageDataGrid_Sorting" CanUserResizeRows="False"
-            SelectionUnit="Cell" Height="auto" 
-            Visibility="Collapsed">
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="70"
-            Binding="{Binding Path=Id}"
-            IsReadOnly="True"
-            Foreground="Black">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="4*" Binding="{Binding Path=Name}"
-                    Foreground="Black" CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                            Foreground="Black" Text="Название" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=MaxWeight}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                Foreground="Black" Text="Макс. вес (кг)" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn 
-                    Width="*" Binding="{Binding Path=Count}"
-                    Foreground="Black" IsReadOnly="True"
-                    CanUserSort="True">
-                    <DataGridTextColumn.Header>
-                        <TextBlock 
-                Foreground="Black" Text="Кол-во" />
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
         <Button 
             Background="White" Foreground="Black"
             BorderBrush="Black" Content="Добавить"
-            Width="auto" Cursor="Hand"/>
+            Width="auto" Command="{Binding Path=AddingInStorage}" Cursor="Hand"/>
     </StackPanel>
 </UserControl>
