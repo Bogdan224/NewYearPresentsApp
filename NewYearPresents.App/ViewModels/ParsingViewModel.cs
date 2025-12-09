@@ -34,7 +34,7 @@ namespace NewYearPresents.App.ViewModels
                 MessageBox.Show("Файл не задан");
                 return;
             }
-            var parsedData = await _parser.ParseProductsAsync(Filename);
+            var parsedData = await _parser.ParseProductsBoxesFileAsync(Filename);
 
             //Сохранение в базу данных
             List<Task> tasks = new List<Task>

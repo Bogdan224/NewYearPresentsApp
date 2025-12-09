@@ -2,27 +2,40 @@
 using NewYearPresents.Models.Entities;
 using NewYearPresents.Models.Extentions;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing;
+using System.Data.Common;
+using System.Drawing;
+using System.Runtime;
 using System.Text;
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
 
 namespace NewYearPresents.Parser
 {
     public class XlsmParser
     {
         private readonly string _sourceDirectory;
+        private readonly string _targetProductDirectory;
+
+        public string TargetProductDirectory => _targetProductDirectory;
 
         public XlsmParser()
         {
             _sourceDirectory = $@"C:\Users\{Environment.UserName}\Downloads\";
+
+            _targetProductDirectory = $@"C:\Users\{Environment.UserName}\Downloads\Products\";
         }
 
         /// <summary>
         /// Парсит .xlsm файл
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filename">Название файла</param>
         /// <returns></returns>
-        public async Task<ParsedDTO> ParseProductsAsync(string filename)
+        public async Task<ParsedProductsBoxFileDTO> ParseProductsBoxesFileAsync(string filename)
         {
+            if (Directory.Exists(_targetProductDirectory)) Directory.Delete(_targetProductDirectory, true);
+            Directory.CreateDirectory(_targetProductDirectory);
+
             ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
             using var package = new ExcelPackage();
 
@@ -34,7 +47,7 @@ namespace NewYearPresents.Parser
             int rowCount = worksheet.Dimension.Rows;
             int columnCount = worksheet.Dimension.Columns - 1;
 
-            var productsTmp = new List<object>();
+            var dataTmp = new List<object?>();
 
             List<ProductsBox> productsBoxes = new List<ProductsBox>();
             List<Manufacturer> manufacturers = new List<Manufacturer>();
@@ -53,9 +66,11 @@ namespace NewYearPresents.Parser
                     if (j == 2 && value is null)
                         break;
                     if (j == 6 && value is null)
-                        productsTmp.Add(0);
-                    if (j == 7 && worksheet.Cells[i, j].Picture.Exists)
-                        productsTmp.Add(worksheet.Cells[i, j].Picture.Get().GetImageBytes());
+                        dataTmp.Add(0);
+                    if (j == 7)
+                    {
+                        dataTmp.Add(GetImageNameFromCell(worksheet, i, j - 1));
+                    }
                     if (value != null)
                     {
                         //Проверка на производителя
@@ -94,23 +109,24 @@ namespace NewYearPresents.Parser
                                 value = Convert.ToInt32(val[0]) / 30;
                             else
                                 value = val[0];
-                            productsTmp.Add(value);
+                            dataTmp.Add(value);
                             break;
                         }
 
-                        productsTmp.Add(value);
+                        dataTmp.Add(value);
                     }
                 }
-                if (productsTmp.Count == 6)
+                if (dataTmp.Count == 7)
                 {
-                    var name = productsTmp[0].ToString().NormalizeText();
+                    var name = dataTmp[0]?.ToString().NormalizeText();
 
                     var product = new Product()
                     {
                         Name = name,
-                        ExpirationDate = Convert.ToInt32(productsTmp[5]),
+                        ExpirationDate = Convert.ToInt32(dataTmp[6]),
                         Manufacturer = manufacturers.Last(),
-                        ProductType = currentProductType
+                        ProductType = currentProductType,
+                        Image = dataTmp[5]?.ToString()
                     };
 
                     products.Add(product);
@@ -118,25 +134,25 @@ namespace NewYearPresents.Parser
                     var productBox = new ProductsBox()
                     {
                         Product = product,
-                        Price30K = Convert.ToSingle(productsTmp[1]),
-                        Price60K = Convert.ToSingle(productsTmp[2]),
-                        Price100K = Convert.ToSingle(productsTmp[3]),
-                        Price150K = Convert.ToSingle(productsTmp[4]) != 0 ? Convert.ToSingle(productsTmp[4]) : Convert.ToSingle(productsTmp[3]),
-                        //Image = productsTmp[5].ToString()
+                        Price30K = Convert.ToSingle(dataTmp[1]),
+                        Price60K = Convert.ToSingle(dataTmp[2]),
+                        Price100K = Convert.ToSingle(dataTmp[3]),
+                        Price150K = Convert.ToSingle(dataTmp[4]) != 0 ? Convert.ToSingle(dataTmp[4]) : Convert.ToSingle(dataTmp[3]),
+                        
                         TotalWeight = GetTotalWeightFromString(name)
                     };
 
                     productsBoxes.Add(productBox);
                 }
-                if (productsTmp.Count > 0)
-                    productsTmp.Clear();
+                if (dataTmp.Count > 0)
+                    dataTmp.Clear();
             }
 
-            return new ParsedDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
+            return new ParsedProductsBoxFileDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
 
         }
 
-        protected float GetTotalWeightFromString(string source)
+        protected float GetTotalWeightFromString(string? source)
         {
             if (string.IsNullOrEmpty(source))
                 return 0.0f;
@@ -223,6 +239,24 @@ namespace NewYearPresents.Parser
                 weight = source.GetFloat(lastIndex) / 1000;
             }
             return weight * pieces;
+        }
+
+        protected string? GetImageNameFromCell(ExcelWorksheet worksheet, int row, int column)
+        {
+            var picture = (ExcelPicture?)worksheet.Drawings.FirstOrDefault(x =>
+            {
+                if (x is ExcelPicture picture)
+                    if (picture.From.Row == row && picture.From.Column == column)
+                        return true;
+                return false;
+            });
+
+            if (picture is null) return null;
+
+            using var fs = new FileStream(_targetProductDirectory + picture.Name + ".png", FileMode.Create);
+
+            fs.Write(picture.Image.ImageBytes);
+            return picture.Name + ".png";
         }
     }
 }
