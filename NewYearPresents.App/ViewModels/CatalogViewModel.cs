@@ -40,7 +40,7 @@ namespace NewYearPresents.App.ViewModels
         {
             await UpdateCatalogContentAsync();
 
-            dataGrid.DataContext = new ProductsBoxViewModel(new());
+            dataGrid.DataContext = new ProductsBoxViewModel((Models.Entities.ProductsBox)new());
             dataGrid.ItemsSource = ProductsBoxes;
 
             return dataGrid;

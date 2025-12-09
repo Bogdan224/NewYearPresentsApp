@@ -4,16 +4,15 @@ using NewYearPresents.App.ViewModels.Entities;
 using NewYearPresents.Domain;
 using NewYearPresents.Models.Entities;
 using NewYearPresents.Models.Extentions;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Xceed.Wpf.Toolkit.Primitives;
 
 namespace NewYearPresents.App.ViewModels
 {
-    public class AddProductsBoxToStorageViewModel : ObservableObject
+    public class AddPackagingToStorageViewModel : ObservableObject
     {
         private readonly AppDbContext _context;
 
@@ -26,18 +25,18 @@ namespace NewYearPresents.App.ViewModels
         private Window _window;
         private TextBox _countTextBox;
 
-        private ProductsBoxViewModel? selectedProductsBox;
+        private PackagingViewModel? selectedPackaging;
         private bool propertiesVisibility;
 
         public ButtonCommand AddButtonCommand { get; private set; }
 
-        public ProductsBoxViewModel? SelectedProductsBox 
-        { 
-            get { return selectedProductsBox; } 
+        public PackagingViewModel? SelectedPackaging
+        {
+            get { return selectedPackaging; }
             set
             {
-                selectedProductsBox = value;
-                OnPropertyChanged("SelectedProductsBox");
+                selectedPackaging = value;
+                OnPropertyChanged("SelectedPackaging");
             }
         }
 
@@ -56,6 +55,7 @@ namespace NewYearPresents.App.ViewModels
             get => _filteredItems;
             set
             {
+                if(_filteredItems ==  value) return;
                 _filteredItems = value;
                 OnPropertyChanged("FilteredItems");
             }
@@ -66,7 +66,7 @@ namespace NewYearPresents.App.ViewModels
             get => _searchText;
             set
             {
-                if (value == null) return;
+                if (_searchText == value) return;
                 _searchText = value;
                 OnPropertyChanged();
                 if (FilteredItems != null)
@@ -81,15 +81,19 @@ namespace NewYearPresents.App.ViewModels
             get => _selectedItem;
             set
             {
-                if (value == null) return;
                 _selectedItem = value;
-                SelectedProductsBox = new ProductsBoxViewModel(_context.ProductsBoxes.First(x => x.Id == _selectedItem.Id));
-                PropertiesVisibility = Visibility.Visible;
+                if (_selectedItem == null) 
+                    PropertiesVisibility = Visibility.Collapsed;
+                else
+                {
+                    SelectedPackaging = new PackagingViewModel(_context.Packagings.First(x => x.Id == _selectedItem.Id));
+                    PropertiesVisibility = Visibility.Visible;
+                }
                 OnPropertyChanged();
             }
         }
 
-        public AddProductsBoxToStorageViewModel(AppDbContext context)
+        public AddPackagingToStorageViewModel(AppDbContext context)
         {
             // Инициализация данных
             _context = context;
@@ -97,12 +101,12 @@ namespace NewYearPresents.App.ViewModels
 
             propertiesVisibility = false;
 
-            AddButtonCommand = new ButtonCommand(async x => await AddProductsBoxesToStorageAsync());
+            AddButtonCommand = new ButtonCommand(async x => await AddPackagingToStorageAsync());
         }
 
         public async Task InitializeAsync(TextBox countTextBox, Window window)
         {
-            _items = await _context.ProductsBoxes.Select(x => new ComboBoxItem(x.Id, x.Product.Name)).ToListAsync();
+            _items = await _context.Packagings.Select(x => new ComboBoxItem(x.Id, x.Name)).ToListAsync();
 
             _window = window;
             _countTextBox = countTextBox;
@@ -111,29 +115,49 @@ namespace NewYearPresents.App.ViewModels
             FilteredItems.Filter = ItemFilter;
         }
 
-        private async Task AddProductsBoxesToStorageAsync()
+        private async Task AddPackagingToStorageAsync()
         {
             try
             {
-                if (selectedProductsBox == null || _countTextBox?.Text == null)
+                if (selectedPackaging == null || _countTextBox?.Text == null)
                 {
                     throw new ArgumentNullException();
                 }
                 int count = Convert.ToInt32(_countTextBox.Text);
-
-                var product = await _context.ProductsBoxesInStorage.FirstOrDefaultAsync(x => x.ProductsBox == (ProductsBox)selectedProductsBox);
-                if (product == null)
+                
+                var packaging = await _context.PackagingsInStorage.FirstOrDefaultAsync(x => x.Packaging == (Packaging)selectedPackaging);
+                if (packaging == null)
                 {
-                    product = new ProductsBoxInStorage()
+                    packaging = new PackagingInStorage()
                     {
                         Count = count,
-                        ProductsBox = selectedProductsBox
+                        Packaging = selectedPackaging
                     };
                 }
                 else
-                    product.Count += count;
+                    packaging.Count += count;
+                await _context.SavePackagingInStorageAsync(packaging);
 
-                await _context.SaveProductsBoxInStorageAsync(product);
+                _window.Close();
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("Заполните все поля!");
+            }
+            catch
+            {
+                MessageBox.Show("Заполните все поля правильно!");
+            }
+        }
+
+        private async Task AddDefaultPackagingToStorageAsync()
+        {
+            try
+            {
+                var packaging = await _context.GetPackagingInStorageByIdAsync(7);
+                packaging.Count += Convert.ToInt32(_countTextBox.Text);
+
+                await _context.SavePackagingInStorageAsync(packaging);
                 _window.Close();
             }
             catch (ArgumentNullException)
@@ -155,16 +179,4 @@ namespace NewYearPresents.App.ViewModels
                 StringComparison.OrdinalIgnoreCase);
         }
     }
-
-    public class ComboBoxItem(int id, string? name)
-    {
-        public int Id { get; set; } = id;
-        public string? Name { get; set; } = name;
-
-        public override string ToString()
-        {
-            return Name ?? "";
-        }
-    }
-
 }

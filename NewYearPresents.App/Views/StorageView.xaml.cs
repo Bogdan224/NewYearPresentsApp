@@ -18,17 +18,17 @@ namespace NewYearPresents.App.Views
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await ((StorageViewModel)DataContext).AddDataGrids(ProductsBoxesDataGrid, PackagingsDataGrid);
+            await ((StorageViewModel)DataContext).InitializeAsync(ProductsBoxesDataGrid, PackagingsDataGrid);
         }
 
         private void ProductTabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            ((StorageViewModel)DataContext).CurrentObject = StorageViewModel.CurrentObjectInStorage.ProductBox;
+            ((StorageViewModel)DataContext).CurrentObjectType = StorageViewModel.CurrentObjectInStorage.ProductBox;
         }
 
         private void PackagingTabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            ((StorageViewModel)DataContext).CurrentObject = StorageViewModel.CurrentObjectInStorage.Packaging;
+            ((StorageViewModel)DataContext).CurrentObjectType = StorageViewModel.CurrentObjectInStorage.Packaging;
         }
     }
 }

@@ -10,47 +10,52 @@ namespace NewYearPresents.App.ViewModels.Entities
 {
     public class PackagingInStorageViewModel : ObservableObject
     {
-        private readonly PackagingInStorage packagingInStorage;
+        private readonly PackagingInStorage _packagingInStorage;
 
         public PackagingInStorageViewModel(PackagingInStorage packagingInStorage)
         {
-            this.packagingInStorage = packagingInStorage;
+            _packagingInStorage = packagingInStorage;
+        }
+
+        public int PackagingId
+        {
+            get => _packagingInStorage.PackagingId;
         }
 
         public int Id
         {
-            get { return packagingInStorage.Id; }
+            get => _packagingInStorage.Id;
         }
 
         public string? Name
         {
-            get { return packagingInStorage.Packaging.Name; }
+            get => _packagingInStorage.Packaging.Name;
             set
             {
-                if (packagingInStorage.Packaging.Name == value) return;
-                packagingInStorage.Packaging.Name = value;
+                if (_packagingInStorage.Packaging.Name == value) return;
+                _packagingInStorage.Packaging.Name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
 
         public float MaxWeight
         {
-            get { return packagingInStorage.Packaging.MaxWeight; }
+            get => _packagingInStorage.Packaging.MaxWeight;
             set
             {
-                if (packagingInStorage.Packaging.MaxWeight == value) return;
-                packagingInStorage.Packaging.MaxWeight = value;
+                if (_packagingInStorage.Packaging.MaxWeight == value) return;
+                _packagingInStorage.Packaging.MaxWeight = value;
                 OnPropertyChanged(nameof(MaxWeight));
             }
         }
 
         public int Count
         {
-            get { return packagingInStorage.Count; }
+            get => _packagingInStorage.Count;
             set
             {
-                if (packagingInStorage.Count == value) return;
-                packagingInStorage.Count = value;
+                if (_packagingInStorage.Count == value) return;
+                _packagingInStorage.Count = value;
                 OnPropertyChanged(nameof(Count));
             }
         }

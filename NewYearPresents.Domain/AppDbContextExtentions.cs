@@ -14,10 +14,43 @@ namespace NewYearPresents.Models.Extentions
             return services;
         }
 
+        //Products
+        public static async Task SaveProductAsync(this AppDbContext _context, Product entity)
+        {
+            _context.Entry(entity).State = entity.Id == 0 ? EntityState.Added : EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+        public static async Task DeleteProductAsync(this AppDbContext _context, int id)
+        {
+            _context.Entry(new Product() { Id = id }).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+        }
+        public static async Task<Product?> GetProductByIdAsync(this AppDbContext _context, int id)
+        {
+            return await _context.Products.Include(x => x.ProductType)
+                .Include(x => x.Manufacturer)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public static async Task<IEnumerable<Product>> GetProductsAsync(this AppDbContext _context)
+        {
+            return await _context.Products.Include(x => x.ProductType)
+                .Include(x => x.Manufacturer)
+                .ToListAsync();
+        }
+
         //ProductsBox
         public static async Task SaveProductsBoxAsync(this AppDbContext _context, ProductsBox entity)
         {
-            _context.Entry(entity).State = entity.Id == 0 ? EntityState.Added : EntityState.Modified;
+            if (entity.Id == 0)
+            {
+                if (!_context.Products.Contains(entity.Product))
+                    await _context.SaveProductAsync(entity.Product);
+                _context.Entry(entity).State = EntityState.Added;
+            }
+            else
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+            }
             await _context.SaveChangesAsync();
         }
         public static async Task DeleteProductsBoxAsync(this AppDbContext _context, int id)
@@ -84,15 +117,48 @@ namespace NewYearPresents.Models.Extentions
                 .ToListAsync();
         }
 
-        //ProductsBoxInStorage
-        public static async Task SaveProductsBoxInStorageAsync(this AppDbContext _context, ProductsBoxInStorage entity)
+        //Packaging
+        public static async Task SavePackagingAsync(this AppDbContext _context, Packaging entity)
         {
             _context.Entry(entity).State = entity.Id == 0 ? EntityState.Added : EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+        public static async Task DeletePackagingAsync(this AppDbContext _context, int id)
+        {
+            var entity = await _context.GetPackagingByIdAsync(id);
+            if (entity == null) return;
+            _context.Packagings.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+        public static async Task<Packaging?> GetPackagingByIdAsync(this AppDbContext _context, int id)
+        {
+            return await _context.Packagings.FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public static async Task<IEnumerable<Packaging>> GetPackagingsAsync(this AppDbContext _context)
+        {
+            return await _context.Packagings.ToListAsync();
+        }
+
+        //ProductsBoxInStorage
+        public static async Task SaveProductsBoxInStorageAsync(this AppDbContext _context, ProductsBoxInStorage entity)
+        {
+            if (entity.Id == 0)
+            {
+                if(!_context.ProductsBoxes.Contains(entity.ProductsBox))
+                    await _context.SaveProductsBoxAsync(entity.ProductsBox);
+                _context.Entry(entity).State = EntityState.Added;
+            }
+            else
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+        }
         public static async Task DeleteProductsBoxInStorageAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new ProductsBoxInStorage() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetProductsBoxInStorageByIdAsync(id);
+            if (entity == null) return;
+            _context.ProductsBoxesInStorage.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<ProductsBoxInStorage?> GetProductsBoxInStorageByIdAsync(this AppDbContext _context, int id)
@@ -109,13 +175,22 @@ namespace NewYearPresents.Models.Extentions
                 .Include(x => x.ProductsBox.Product)
                 .Include(x => x.ProductsBox.Product.ProductType)
                 .Include(x => x.ProductsBox.Product.Manufacturer)
+                .OrderBy(x => x.Id)
                 .ToListAsync();
         }
 
         //PackagingInStorage
         public static async Task SavePackagingInStorageAsync(this AppDbContext _context, PackagingInStorage entity)
         {
-            _context.Entry(entity).State = entity.Id == 0 ? EntityState.Added : EntityState.Modified;
+            if (entity.Id == 0)
+            {
+                if (!_context.Packagings.Contains(entity.Packaging))
+                    await _context.SavePackagingAsync(entity.Packaging);
+                _context.Entry(entity).State = EntityState.Added;
+            }
+            else {
+                _context.Entry(entity).State = EntityState.Modified;
+            }
             await _context.SaveChangesAsync();
         }
         public static async Task DeletePackagingInStorageAsync(this AppDbContext _context, int id)

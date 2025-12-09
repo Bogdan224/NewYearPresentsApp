@@ -10,7 +10,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 {
     public class ProductsBoxInStorageViewModel : ObservableObject
     {
-        private ProductsBoxInStorage _productsBoxInStorage;
+        private readonly ProductsBoxInStorage _productsBoxInStorage;
 
         public ProductsBoxInStorageViewModel(ProductsBoxInStorage productsBoxInStorage)
         {

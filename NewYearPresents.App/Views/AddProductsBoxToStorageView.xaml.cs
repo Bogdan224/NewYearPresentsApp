@@ -28,7 +28,7 @@ namespace NewYearPresents.App.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await ((AddProductsBoxToStorageViewModel)DataContext).InitializeAsync(ProductsComboBox, CountTextBox, this);
+            await ((AddProductsBoxToStorageViewModel)DataContext).InitializeAsync(CountTextBox, this);
         }
     }
 }

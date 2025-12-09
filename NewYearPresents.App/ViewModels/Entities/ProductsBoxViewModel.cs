@@ -5,7 +5,7 @@ namespace NewYearPresents.App.ViewModels.Entities
 {
     public class ProductsBoxViewModel : ObservableObject
     {
-        private ProductsBox _productBox;
+        private readonly ProductsBox _productBox;
 
         public ProductsBoxViewModel(ProductsBox p)
         {

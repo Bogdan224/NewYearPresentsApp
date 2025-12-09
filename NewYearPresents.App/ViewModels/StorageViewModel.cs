@@ -22,14 +22,17 @@ namespace NewYearPresents.App.ViewModels
         public ObservableCollection<ProductsBoxInStorageViewModel> ProductsBoxesInStorage { get; set; }
         public ObservableCollection<PackagingInStorageViewModel> PackagingsInStorage { get; set; }
 
+        public object CurrentObject { get; set; }
+
         public enum CurrentObjectInStorage
         {
             ProductBox,
             Packaging
         }
-        public CurrentObjectInStorage CurrentObject { get; set; }
+        public CurrentObjectInStorage CurrentObjectType { get; set; }
 
         public ButtonCommand AddingInStorage { get; private set; }
+        public ButtonCommand DeleteButtonCommand { get; private set; }
 
         public DataGrid? ProductsBoxesDataGrid { get; private set; }
         public DataGrid? PackagingsDataGrid { get; private set; }
@@ -44,9 +47,11 @@ namespace NewYearPresents.App.ViewModels
             {
                 await AddingInStorageAsync();
             });
+
+            DeleteButtonCommand = new(async x => await DeletingFromStorageAsync());
         }
 
-        public async Task AddDataGrids(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
+        public async Task InitializeAsync(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
         {
             await UpdateStorageContentAsync();
 
@@ -62,7 +67,7 @@ namespace NewYearPresents.App.ViewModels
         private async Task UpdateStorageContentAsync()
         {
             await UpdateProductsBoxesInStorageAsync();
-            await GetPackagingsInStorageAsync();
+            await UpdatePackagingsInStorageAsync();
         }
 
         private async Task UpdateProductsBoxesInStorageAsync()
@@ -83,7 +88,7 @@ namespace NewYearPresents.App.ViewModels
                 MessageBox.Show(nameof(this.UpdateProductsBoxesInStorageAsync) + "\n" + e.Message);
             }
         }
-        private async Task GetPackagingsInStorageAsync()
+        private async Task UpdatePackagingsInStorageAsync()
         {
             try
             {
@@ -98,18 +103,47 @@ namespace NewYearPresents.App.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show(nameof(this.GetPackagingsInStorageAsync) + "\n" + e.Message);
+                MessageBox.Show(nameof(this.UpdatePackagingsInStorageAsync) + "\n" + e.Message);
+            }
+        }
+
+        private async Task DeletingFromStorageAsync()
+        {
+            try
+            {
+                switch (CurrentObjectType)
+                {
+                    case CurrentObjectInStorage.ProductBox:
+                        await _context.DeleteProductsBoxInStorageAsync(((ProductsBoxInStorageViewModel)CurrentObject).Id);
+                        await UpdateProductsBoxesInStorageAsync();
+                        break;
+                    case CurrentObjectInStorage.Packaging:
+                        await _context.DeletePackagingInStorageAsync(((PackagingInStorageViewModel)CurrentObject).Id);
+                        await UpdatePackagingsInStorageAsync();
+                        break;
+                    default:
+                        throw new Exception();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Не удалось удалить объект");
             }
         }
 
         private async Task AddingInStorageAsync()
         {
-            switch (CurrentObject)
+            switch (CurrentObjectType)
             {
                 case CurrentObjectInStorage.ProductBox:
-                    AddProductsBoxToStorageView view = new(new AddProductsBoxToStorageViewModel(_context));
-                    view.ShowDialog();
+                    AddProductsBoxToStorageView productsView = new(new AddProductsBoxToStorageViewModel(_context));
+                    productsView.ShowDialog();
                     await UpdateProductsBoxesInStorageAsync();
+                    break;
+                case CurrentObjectInStorage.Packaging:
+                    AddPackagingToStorageView packagingView = new(new AddPackagingToStorageViewModel(_context));
+                    packagingView.ShowDialog();
+                    await UpdatePackagingsInStorageAsync();
                     break;
             }
         }

@@ -101,7 +101,7 @@ namespace NewYearPresents.App.Core.Converters
                                 break;
 
                             case "-":
-                                numbers[index] = numbers[index] - numbers[index + 1];
+                                numbers[index] = numbers[index] - numbers[index + 1] > 0 ? numbers[index] - numbers[index + 1] : 0; 
                                 break;
 
                             case "*":
