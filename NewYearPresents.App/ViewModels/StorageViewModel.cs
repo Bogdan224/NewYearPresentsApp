@@ -15,13 +15,31 @@ using System.Windows.Controls;
 
 namespace NewYearPresents.App.ViewModels
 {
-    public class StorageViewModel
+    public class StorageViewModel : ObservableObject
     {
         private readonly AppDbContext _context;
 
-        public ObservableCollection<ProductsBoxInStorageViewModel> ProductsBoxesInStorage { get; set; }
-        public ObservableCollection<PackagingInStorageViewModel> PackagingsInStorage { get; set; }
+        private ObservableCollection<ProductsBoxInStorageViewModel> productsBoxesInStorage;
+        private ObservableCollection<PackagingInStorageViewModel> packagingsInStorage;
 
+        public ObservableCollection<ProductsBoxInStorageViewModel> ProductsBoxesInStorage 
+        {
+            get => productsBoxesInStorage;
+            set
+            {
+                productsBoxesInStorage = value;
+                OnPropertyChanged(nameof(ProductsBoxesInStorage));
+            }
+        }
+        public ObservableCollection<PackagingInStorageViewModel> PackagingsInStorage
+        {
+            get => packagingsInStorage;
+            set
+            {
+                packagingsInStorage = value;
+                OnPropertyChanged(nameof(PackagingsInStorage));
+            }
+        }
         public object CurrentObject { get; set; }
 
         public enum CurrentObjectInStorage
@@ -33,9 +51,6 @@ namespace NewYearPresents.App.ViewModels
 
         public ButtonCommand AddingInStorage { get; private set; }
         public ButtonCommand DeleteButtonCommand { get; private set; }
-
-        public DataGrid? ProductsBoxesDataGrid { get; private set; }
-        public DataGrid? PackagingsDataGrid { get; private set; }
 
         public StorageViewModel(AppDbContext context)
         {
@@ -51,20 +66,7 @@ namespace NewYearPresents.App.ViewModels
             DeleteButtonCommand = new(async x => await DeletingFromStorageAsync());
         }
 
-        public async Task InitializeAsync(DataGrid productsDataGrid, DataGrid packagingsDataGrid)
-        {
-            await UpdateStorageContentAsync();
-
-            ProductsBoxesDataGrid = productsDataGrid;
-            ProductsBoxesDataGrid.DataContext = new ProductsBoxInStorageViewModel(new());
-            ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
-
-            PackagingsDataGrid = packagingsDataGrid;
-            PackagingsDataGrid.DataContext = new PackagingInStorageViewModel(new());
-            PackagingsDataGrid.ItemsSource = PackagingsInStorage;
-        }
-
-        private async Task UpdateStorageContentAsync()
+        public async Task UpdateStorageContentAsync()
         {
             await UpdateProductsBoxesInStorageAsync();
             await UpdatePackagingsInStorageAsync();
@@ -75,13 +77,7 @@ namespace NewYearPresents.App.ViewModels
             try
             {
                 var products = await _context.GetProductsBoxesInStorageAsync();
-                ProductsBoxesInStorage = new ObservableCollection<ProductsBoxInStorageViewModel>();
-                foreach (var product in products)
-                {
-                    ProductsBoxesInStorage.Add(new ProductsBoxInStorageViewModel(product));
-                }
-                if (ProductsBoxesDataGrid != null)
-                    ProductsBoxesDataGrid.ItemsSource = ProductsBoxesInStorage;
+                ProductsBoxesInStorage = new ObservableCollection<ProductsBoxInStorageViewModel>(products.Select(x=>new ProductsBoxInStorageViewModel(x)));
             }
             catch (Exception e)
             {
@@ -93,13 +89,7 @@ namespace NewYearPresents.App.ViewModels
             try
             {
                 var packagings = await _context.GetPackagingsInStorageAsync();
-                PackagingsInStorage = new ObservableCollection<PackagingInStorageViewModel>();
-                foreach (var packaging in packagings)
-                {
-                    PackagingsInStorage.Add(new PackagingInStorageViewModel(packaging));
-                }
-                if (PackagingsDataGrid != null)
-                    PackagingsDataGrid.ItemsSource = PackagingsInStorage;
+                PackagingsInStorage = new ObservableCollection<PackagingInStorageViewModel>(packagings.Select(x=>new PackagingInStorageViewModel(x)));
             }
             catch (Exception e)
             {

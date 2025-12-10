@@ -22,7 +22,9 @@ namespace NewYearPresents.Models.Extentions
         }
         public static async Task DeleteProductAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new Product() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetProductByIdAsync(id);
+            if (entity == null) return;
+            _context.Products.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<Product?> GetProductByIdAsync(this AppDbContext _context, int id)
@@ -55,7 +57,9 @@ namespace NewYearPresents.Models.Extentions
         }
         public static async Task DeleteProductsBoxAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new ProductsBox() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetProductsBoxByIdAsync(id);
+            if (entity == null) return;
+            _context.ProductsBoxes.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<ProductsBox?> GetProductsBoxByIdAsync(this AppDbContext _context, int id)
@@ -81,7 +85,9 @@ namespace NewYearPresents.Models.Extentions
         }
         public static async Task DeleteManufacturerAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new Manufacturer() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetManufacturerByIdAsync(id);
+            if (entity == null) return;
+            _context.Manufacturers.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<Manufacturer?> GetManufacturerByIdAsync(this AppDbContext _context, int id)
@@ -103,7 +109,9 @@ namespace NewYearPresents.Models.Extentions
         }
         public static async Task DeleteProductTypeAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new ProductType() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetProductTypeByIdAsync(id);
+            if (entity == null) return;
+            _context.ProductTypes.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<ProductType?> GetProductTypeByIdAsync(this AppDbContext _context, int id)
@@ -195,7 +203,9 @@ namespace NewYearPresents.Models.Extentions
         }
         public static async Task DeletePackagingInStorageAsync(this AppDbContext _context, int id)
         {
-            _context.Entry(new PackagingInStorage() { Id = id }).State = EntityState.Deleted;
+            var entity = await _context.GetPackagingInStorageByIdAsync(id);
+            if (entity == null) return;
+            _context.PackagingsInStorage.Remove(entity);
             await _context.SaveChangesAsync();
         }
         public static async Task<PackagingInStorage?> GetPackagingInStorageByIdAsync(this AppDbContext _context, int id)

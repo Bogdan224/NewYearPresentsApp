@@ -37,11 +37,13 @@
                      GotFocus="ProductTabItem_GotFocus">
                 <TabItem.Content >
                     <DataGrid 
-    Background="White"
-    x:Name="ProductsBoxesDataGrid"
-    Style="{StaticResource DataGridStyle}" CurrentItem="{Binding DataContext.CurrentObject, 
-    RelativeSource={RelativeSource AncestorType=UserControl}, 
-    Mode=OneWayToSource}">
+                        Background="White"
+                        x:Name="ProductsBoxesDataGrid"
+                        Style="{StaticResource DataGridStyle}" 
+                        CurrentItem="{Binding DataContext.CurrentObject,
+                        RelativeSource={RelativeSource AncestorType=UserControl},
+                        Mode=OneWayToSource}"
+                        ItemsSource="{Binding ProductsBoxesInStorage}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="70"
                 Binding="{Binding Path=Id}"
@@ -151,16 +153,17 @@
                      GotFocus="PackagingTabItem_GotFocus">
                 <TabItem.Content>
                     <DataGrid 
-    Background="White" x:Name="PackagingsDataGrid"
-    Style="{StaticResource DataGridStyle}"
+                        Background="White" x:Name="PackagingsDataGrid"
+                        Style="{StaticResource DataGridStyle}"
                         CurrentItem="{Binding DataContext.CurrentObject, 
-    RelativeSource={RelativeSource AncestorType=UserControl}, 
-    Mode=OneWayToSource}">
+                        RelativeSource={RelativeSource AncestorType=UserControl}, 
+                        Mode=OneWayToSource}"
+                        ItemsSource="{Binding PackagingsInStorage}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="70"
-    Binding="{Binding Path=Id}"
-    IsReadOnly="True"
-    Foreground="Black">
+                                Binding="{Binding Path=Id}"
+                                IsReadOnly="True"
+                                Foreground="Black">
                                 <DataGridTextColumn.Header>
                                     <TextBlock 
                     Foreground="Black" Text="" />

@@ -23,13 +23,22 @@ namespace NewYearPresents.App.ViewModels
         private string? _searchText;
         private ComboBoxItem? _selectedItem;
 
-        private Window _window;
-        private TextBox _countTextBox;
+        private string? _countText;
 
         private ProductsBoxViewModel? selectedProductsBox;
         private bool propertiesVisibility;
 
         public ButtonCommand AddButtonCommand { get; private set; }
+
+        public string? CountText
+        {
+            get => _countText;
+            set
+            {
+                _countText = value;
+                OnPropertyChanged(nameof(_countText));
+            }
+        }
 
         public ProductsBoxViewModel? SelectedProductsBox 
         { 
@@ -68,7 +77,7 @@ namespace NewYearPresents.App.ViewModels
             {
                 if (value == null) return;
                 _searchText = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SearchText));
                 if (FilteredItems != null)
                 {
                     FilteredItems.Refresh();
@@ -85,7 +94,7 @@ namespace NewYearPresents.App.ViewModels
                 _selectedItem = value;
                 SelectedProductsBox = new ProductsBoxViewModel(_context.ProductsBoxes.First(x => x.Id == _selectedItem.Id));
                 PropertiesVisibility = Visibility.Visible;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -97,29 +106,26 @@ namespace NewYearPresents.App.ViewModels
 
             propertiesVisibility = false;
 
-            AddButtonCommand = new ButtonCommand(async x => await AddProductsBoxesToStorageAsync());
+            AddButtonCommand = new ButtonCommand(async x => await AddProductsBoxesToStorageAsync((Window)x));
         }
 
-        public async Task InitializeAsync(TextBox countTextBox, Window window)
+        public async Task InitializeAsync()
         {
             _items = await _context.ProductsBoxes.Select(x => new ComboBoxItem(x.Id, x.Product.Name)).ToListAsync();
-
-            _window = window;
-            _countTextBox = countTextBox;
 
             FilteredItems = CollectionViewSource.GetDefaultView(_items);
             FilteredItems.Filter = ItemFilter;
         }
 
-        private async Task AddProductsBoxesToStorageAsync()
+        private async Task AddProductsBoxesToStorageAsync(Window window)
         {
             try
             {
-                if (selectedProductsBox == null || _countTextBox?.Text == null)
+                if (selectedProductsBox == null || CountText == null)
                 {
                     throw new ArgumentNullException();
                 }
-                int count = Convert.ToInt32(_countTextBox.Text);
+                int count = Convert.ToInt32(CountText);
 
                 var product = await _context.ProductsBoxesInStorage.FirstOrDefaultAsync(x => x.ProductsBox == (ProductsBox)selectedProductsBox);
                 if (product == null)
@@ -134,7 +140,7 @@ namespace NewYearPresents.App.ViewModels
                     product.Count += count;
 
                 await _context.SaveProductsBoxInStorageAsync(product);
-                _window.Close();
+                window.Close();
             }
             catch (ArgumentNullException)
             {

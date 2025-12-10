@@ -18,7 +18,7 @@ namespace NewYearPresents.App.Views
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await ((StorageViewModel)DataContext).InitializeAsync(ProductsBoxesDataGrid, PackagingsDataGrid);
+            await ((StorageViewModel)DataContext).UpdateStorageContentAsync();
         }
 
         private void ProductTabItem_GotFocus(object sender, RoutedEventArgs e)

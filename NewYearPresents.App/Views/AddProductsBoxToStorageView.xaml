@@ -76,14 +76,16 @@
                 <TextBox x:Name="CountTextBox" Width="{Binding ElementName=AddProductWindow,
                     Path=ActualWidth,
                     Converter={StaticResource MathConverter},
-                    ConverterParameter=(@VALUE-170)}"/>
+                    ConverterParameter=(@VALUE-170)}"
+                         Text="{Binding CountText}"/>
         </StackPanel>
         <Separator/>
 
         
     </StackPanel>
         <Button VerticalAlignment="Bottom" Content="Добавить" Margin="20"
-                Command="{Binding AddButtonCommand}"/>
+                Command="{Binding AddButtonCommand}" 
+                CommandParameter="{Binding ElementName=AddProductWindow}"/>
     </Grid>
 
 

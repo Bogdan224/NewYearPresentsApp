@@ -1,5 +1,6 @@
 ﻿using NewYearPresents.App.ViewModels.Entities;
 using NewYearPresents.Domain;
+using NewYearPresents.Models.Entities;
 using NewYearPresents.Models.Extentions;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -24,11 +25,7 @@ namespace NewYearPresents.App.ViewModels
             try
             {
                 var products = await _context.GetProductsBoxesAsync();
-                ProductsBoxes = new ObservableCollection<ProductsBoxViewModel>();
-                foreach (var product in products)
-                {
-                    ProductsBoxes.Add(new ProductsBoxViewModel(product));
-                }
+                ProductsBoxes = new ObservableCollection<ProductsBoxViewModel>(products.Select(x => new ProductsBoxViewModel(x)));
             }
             catch (Exception e)
             {

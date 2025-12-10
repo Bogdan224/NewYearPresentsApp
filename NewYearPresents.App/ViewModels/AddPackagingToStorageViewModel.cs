@@ -22,13 +22,22 @@ namespace NewYearPresents.App.ViewModels
         private string? _searchText;
         private ComboBoxItem? _selectedItem;
 
-        private Window _window;
-        private TextBox _countTextBox;
+        public string? _countText;
 
         private PackagingViewModel? selectedPackaging;
         private bool propertiesVisibility;
 
         public ButtonCommand AddButtonCommand { get; private set; }
+
+        public string? CountText
+        {
+            get => _countText;
+            set
+            {
+                _countText = value;
+                OnPropertyChanged(nameof(CountText));
+            }
+        }
 
         public PackagingViewModel? SelectedPackaging
         {
@@ -68,7 +77,7 @@ namespace NewYearPresents.App.ViewModels
             {
                 if (_searchText == value) return;
                 _searchText = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SearchText));
                 if (FilteredItems != null)
                 {
                     FilteredItems.Refresh();
@@ -89,7 +98,7 @@ namespace NewYearPresents.App.ViewModels
                     SelectedPackaging = new PackagingViewModel(_context.Packagings.First(x => x.Id == _selectedItem.Id));
                     PropertiesVisibility = Visibility.Visible;
                 }
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -101,29 +110,26 @@ namespace NewYearPresents.App.ViewModels
 
             propertiesVisibility = false;
 
-            AddButtonCommand = new ButtonCommand(async x => await AddPackagingToStorageAsync());
+            AddButtonCommand = new ButtonCommand(async x => await AddPackagingToStorageAsync((Window)x);
         }
 
-        public async Task InitializeAsync(TextBox countTextBox, Window window)
+        public async Task InitializeAsync()
         {
             _items = await _context.Packagings.Select(x => new ComboBoxItem(x.Id, x.Name)).ToListAsync();
-
-            _window = window;
-            _countTextBox = countTextBox;
 
             FilteredItems = CollectionViewSource.GetDefaultView(_items);
             FilteredItems.Filter = ItemFilter;
         }
 
-        private async Task AddPackagingToStorageAsync()
+        private async Task AddPackagingToStorageAsync(Window window)
         {
             try
             {
-                if (selectedPackaging == null || _countTextBox?.Text == null)
+                if (selectedPackaging == null || CountText == null)
                 {
                     throw new ArgumentNullException();
                 }
-                int count = Convert.ToInt32(_countTextBox.Text);
+                int count = Convert.ToInt32(CountText);
                 
                 var packaging = await _context.PackagingsInStorage.FirstOrDefaultAsync(x => x.Packaging == (Packaging)selectedPackaging);
                 if (packaging == null)
@@ -138,27 +144,7 @@ namespace NewYearPresents.App.ViewModels
                     packaging.Count += count;
                 await _context.SavePackagingInStorageAsync(packaging);
 
-                _window.Close();
-            }
-            catch (ArgumentNullException)
-            {
-                MessageBox.Show("Заполните все поля!");
-            }
-            catch
-            {
-                MessageBox.Show("Заполните все поля правильно!");
-            }
-        }
-
-        private async Task AddDefaultPackagingToStorageAsync()
-        {
-            try
-            {
-                var packaging = await _context.GetPackagingInStorageByIdAsync(7);
-                packaging.Count += Convert.ToInt32(_countTextBox.Text);
-
-                await _context.SavePackagingInStorageAsync(packaging);
-                _window.Close();
+                window.Close();
             }
             catch (ArgumentNullException)
             {
