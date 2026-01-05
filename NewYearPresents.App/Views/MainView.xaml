@@ -82,12 +82,12 @@
                     Command="{Binding Path=StorageViewCommand}"/>
 
                 <RadioButton
-                    Content="Заказы"
+                    Content="Подарки"
                     Height="50"
                     Style="{StaticResource MenuButtonKey}"
                     Foreground="Black"
                     FontSize="16" 
-                    Visibility="Collapsed"/>
+                    Command="{Binding Path=PresentsViewCommand}"/>
 
                 <RadioButton
                     Content="Загрузить данные"

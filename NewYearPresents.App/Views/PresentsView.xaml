@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <converter:MathConverter x:Key="MathConverter"></converter:MathConverter>
     </UserControl.Resources>
-    
+
     <Grid>
         <StackPanel 
             Orientation="Vertical" HorizontalAlignment="Left"
@@ -22,12 +22,14 @@
             <ListBox>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Image />
-                        </Grid>
+                        <Button Width="200" Height="200">
+                            <Button.Content>
+                                <Image Source="{Binding PackagingImage}"/>
+                            </Button.Content>
+                        </Button>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel> 
+        </StackPanel>
     </Grid>
 </UserControl>

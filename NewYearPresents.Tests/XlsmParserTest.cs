@@ -3,8 +3,13 @@
 namespace NewYearPresents.Tests
 {
     [TestClass]
-    public sealed class XlsmParserTest : XlsmParser
+    public sealed class XlsmParserTest : ExcelParser
     {
+        public XlsmParserTest() : base(new Models.Infrastructure.Folders())
+        {
+
+        }
+
         [TestMethod]
         [DataRow("Айналайын карамель пп/пл 1,0 (6 кг)")]
         [DataRow("Достык карамель в пп/пл 1.0 (6 кг)")]

@@ -6,51 +6,17 @@ namespace NewYearPresents.App.ViewModels.Entities
     public class ProductsBoxViewModel : ObservableObject
     {
         private readonly ProductsBox _productBox;
+        public ProductViewModel Product { get; private set; }
 
         public ProductsBoxViewModel(ProductsBox p)
         {
             _productBox = p;
+            Product = new(_productBox.Product);
         }
 
         public int Id
         {
             get { return _productBox.Id; }
-        }
-
-        public string? Name
-        {
-            get { return _productBox.Product.Name; }
-            set
-            {
-                if (_productBox.Product.Name == value)
-                    return;
-                _productBox.Product.Name = value;
-                OnPropertyChanged("Name");
-            }
-        }
-
-        public string? ManufacturerName
-        {
-            get { return _productBox.Product.Manufacturer?.Name; }
-            set
-            {
-                if (_productBox.Product.Manufacturer is null || _productBox.Product.Manufacturer.Name == value)
-                    return;
-                _productBox.Product.Manufacturer.Name = value;
-                OnPropertyChanged("ManufacturerName");
-            }
-        }
-
-        public string? ProductTypeName
-        {
-            get { return _productBox.Product.ProductType?.Name; }
-            set
-            {
-                if (_productBox.Product.ProductType is null || _productBox.Product.ProductType.Name == value)
-                    return;
-                _productBox.Product.ProductType.Name = value;
-                OnPropertyChanged("ProductTypeName");
-            }
         }
 
         public float Price30K
@@ -109,18 +75,6 @@ namespace NewYearPresents.App.ViewModels.Entities
                 if (_productBox.TotalWeight == value) return;
                 _productBox.TotalWeight = value;
                 OnPropertyChanged("TotalWeight");
-            }
-        }
-
-        public int ExpirationDate
-        {
-            get { return _productBox.Product.ExpirationDate; }
-            set
-            {
-                if (_productBox.Product.ExpirationDate == value)
-                    return;
-                _productBox.Product.ExpirationDate = value;
-                OnPropertyChanged("ExpirationDate");
             }
         }
 

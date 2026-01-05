@@ -56,7 +56,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Width="4*"
-                Binding="{Binding Path=Name}"
+                Binding="{Binding Path=ProductsBox.Product.Name}"
                 Foreground="Black"
                 CanUserSort="True">
                                 <DataGridTextColumn.Header>
@@ -66,7 +66,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Width="2*"
-                Binding="{Binding Path=ManufacturerName}"
+                Binding="{Binding Path=ProductsBox.Product.ManufacturerName}"
                 Foreground="Black"
                 IsReadOnly="True"
                 CanUserSort="True">
@@ -77,7 +77,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Width="2*"
-                Binding="{Binding Path=ProductTypeName}"
+                Binding="{Binding Path=ProductsBox.Product.TypeName}"
                 Foreground="Black"
                 IsReadOnly="True"
                 CanUserSort="True">
@@ -88,7 +88,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn 
-            Width="*" Binding="{Binding Path=Price30K}"
+            Width="*" Binding="{Binding Path=ProductsBox.Price30K}"
             Foreground="Black" IsReadOnly="True"
             CanUserSort="True">
                                 <DataGridTextColumn.Header>
@@ -98,7 +98,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn 
-            Width="*" Binding="{Binding Path=TotalWeight}"
+            Width="*" Binding="{Binding Path=ProductsBox.TotalWeight}"
             Foreground="Black" IsReadOnly="True"
             CanUserSort="True">
                                 <DataGridTextColumn.Header>
@@ -108,7 +108,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn 
-            Width="*" Binding="{Binding Path=ExpirationDate}"
+            Width="*" Binding="{Binding Path=ProductsBox.Product.ExpirationDate}"
             Foreground="Black" IsReadOnly="True"
             CanUserSort="True">
                                 <DataGridTextColumn.Header>
@@ -171,7 +171,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn 
-            Width="4*" Binding="{Binding Path=Name}"
+            Width="4*" Binding="{Binding Path=Packaging.Name}"
             Foreground="Black" CanUserSort="True">
                                 <DataGridTextColumn.Header>
                                     <TextBlock 
@@ -180,7 +180,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn 
-            Width="*" Binding="{Binding Path=MaxWeight}"
+            Width="*" Binding="{Binding Path=Packaging.MaxWeight}"
             Foreground="Black" IsReadOnly="True"
             CanUserSort="True">
                                 <DataGridTextColumn.Header>

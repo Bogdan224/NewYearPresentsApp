@@ -11,42 +11,17 @@ namespace NewYearPresents.App.ViewModels.Entities
     public class PackagingInStorageViewModel : ObservableObject
     {
         private readonly PackagingInStorage _packagingInStorage;
+        public PackagingViewModel Packaging { get; private set; }
 
         public PackagingInStorageViewModel(PackagingInStorage packagingInStorage)
         {
             _packagingInStorage = packagingInStorage;
-        }
-
-        public int PackagingId
-        {
-            get => _packagingInStorage.PackagingId;
+            Packaging = new(_packagingInStorage.Packaging);
         }
 
         public int Id
         {
             get => _packagingInStorage.Id;
-        }
-
-        public string? Name
-        {
-            get => _packagingInStorage.Packaging.Name;
-            set
-            {
-                if (_packagingInStorage.Packaging.Name == value) return;
-                _packagingInStorage.Packaging.Name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-
-        public float MaxWeight
-        {
-            get => _packagingInStorage.Packaging.MaxWeight;
-            set
-            {
-                if (_packagingInStorage.Packaging.MaxWeight == value) return;
-                _packagingInStorage.Packaging.MaxWeight = value;
-                OnPropertyChanged(nameof(MaxWeight));
-            }
         }
 
         public int Count

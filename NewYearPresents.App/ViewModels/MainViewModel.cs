@@ -1,9 +1,10 @@
 ﻿using NewYearPresents.App.Core;
-using NewYearPresents.App.Infrastructure;
+using NewYearPresents.Models.Infrastructure;
 using NewYearPresents.App.Views;
 using NewYearPresents.Domain;
 using NewYearPresents.Parser;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace NewYearPresents.App.ViewModels
 {
@@ -14,10 +15,12 @@ namespace NewYearPresents.App.ViewModels
         public ButtonCommand CatalogViewCommand { get; private set; }
         public ButtonCommand ParsingViewCommand { get; private set; }
         public ButtonCommand StorageViewCommand { get; private set; }
+        public ButtonCommand PresentsViewCommand { get; private set; }
 
         public CatalogView CatalogView { get; private set; }
         public ParsingView ParsingView { get; private set; }
         public StorageView StorageView { get; private set; }
+        public PresentsView PresentsView { get; private set; }
 
         public object? _currentView;
 
@@ -31,33 +34,27 @@ namespace NewYearPresents.App.ViewModels
             }
         }
 
-        public MainViewModel(Company company, CatalogViewModel catalogViewModel, StorageViewModel storageViewModel, ParsingViewModel parsingViewModel)
+        public MainViewModel(Company company, CatalogViewModel catalogViewModel, StorageViewModel storageViewModel, ParsingViewModel parsingViewModel, PresentsViewModel presentsViewModel)
         {
             Company = company;
 
-            CatalogView = new CatalogView(catalogViewModel);
-            StorageView = new StorageView(storageViewModel);
-            ParsingView = new ParsingView(parsingViewModel);
+            CatalogView = new(catalogViewModel);
+            StorageView = new(storageViewModel);
+            ParsingView = new(parsingViewModel);
+            PresentsView = new(presentsViewModel);
 
             CurrentView = CatalogView;
 
-            CatalogViewCommand = new ButtonCommand(o =>
-            {
-                if (CurrentView == CatalogView) return;
-                CurrentView = CatalogView;
-            });
+            CatalogViewCommand = new(x => ChangeCurrentView(CatalogView));
+            StorageViewCommand = new(x => ChangeCurrentView(StorageView));
+            ParsingViewCommand = new(x => ChangeCurrentView(ParsingView));
+            PresentsViewCommand = new(x => ChangeCurrentView(PresentsView));
+        }
 
-            StorageViewCommand = new ButtonCommand(o =>
-            {
-                if (CurrentView == StorageView) return;
-                CurrentView = StorageView;
-            });
-
-            ParsingViewCommand = new ButtonCommand(o =>
-            {
-                if (CurrentView == ParsingView) return;
-                CurrentView = ParsingView;
-            });
+        private void ChangeCurrentView(ContentControl contentControl)
+        {
+            if (CurrentView == contentControl) return;
+            CurrentView = contentControl;
         }
     }
 }

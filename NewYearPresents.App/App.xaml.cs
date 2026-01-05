@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NewYearPresents.App.Infrastructure;
+using NewYearPresents.Models.Infrastructure;
 using NewYearPresents.App.ViewModels;
 using NewYearPresents.App.Views;
 using NewYearPresents.Models.Extentions;
@@ -54,13 +54,17 @@ namespace NewYearPresents.App
             }
 
             services.AddAppDbContext(config.Database.ConnectionString!);
-            services.AddTransient<XlsmParser>();
             services.AddSingleton<Company>(config.Company);
+            services.AddSingleton<Folders>(config.Folders);
+
+            services.AddTransient<ExcelParser>();
 
             services.AddTransient<CatalogViewModel>();
             services.AddTransient<StorageViewModel>();
             services.AddTransient<ParsingViewModel>();
+            services.AddTransient<PresentsViewModel>();
             services.AddTransient<MainViewModel>();
+
             services.AddTransient<MainView>();
         }
     }

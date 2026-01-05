@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace NewYearPresents.Models.Entities
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public int Id { get; set; }
         public string? ClientName { get; set; }
         public int TotalPrice { get; set; }
-        public DateTime DateOfReceipt { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 }

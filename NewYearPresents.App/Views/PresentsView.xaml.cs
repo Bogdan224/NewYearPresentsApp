@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewYearPresents.App.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace NewYearPresents.App.Views
     /// </summary>
     public partial class PresentsView : UserControl
     {
-        public PresentsView()
+        public PresentsView(PresentsViewModel presentsViewModel)
         {
             InitializeComponent();
+            DataContext = presentsViewModel;
         }
     }
 }

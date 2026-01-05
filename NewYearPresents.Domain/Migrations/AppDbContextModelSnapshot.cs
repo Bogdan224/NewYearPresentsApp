@@ -49,8 +49,11 @@ namespace NewYearPresents.Domain.Migrations
                     b.Property<string>("ClientName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfReceipt")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalPrice")
                         .HasColumnType("int");
@@ -68,7 +71,7 @@ namespace NewYearPresents.Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("MaxWeight")
@@ -110,6 +113,9 @@ namespace NewYearPresents.Domain.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PackagingId")
                         .HasColumnType("int");
@@ -164,7 +170,7 @@ namespace NewYearPresents.Domain.Migrations
                     b.Property<int>("ExpirationDate")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ManufacturerId")

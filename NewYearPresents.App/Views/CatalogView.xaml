@@ -32,7 +32,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn Width="3*"
-                                    Binding="{Binding Path=Name}"
+                                    Binding="{Binding Path=Product.Name}"
                                     Foreground="Black"
                                     CanUserSort="True">
                     <DataGridTextColumn.Header>
@@ -42,7 +42,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn Width="*"
-                                    Binding="{Binding Path=ManufacturerName}"
+                                    Binding="{Binding Path=Product.ManufacturerName}"
                                     Foreground="Black"
                                     IsReadOnly="True"
                                     CanUserSort="True">
@@ -53,7 +53,7 @@
                 </DataGridTextColumn>
 
                 <DataGridTextColumn Width="*"
-                                    Binding="{Binding Path=ProductTypeName}"
+                                    Binding="{Binding Path=Product.TypeName}"
                                     Foreground="Black"
                                     IsReadOnly="True"
                                     CanUserSort="True">
@@ -89,7 +89,7 @@
 
                 <DataGridTextColumn 
                     Width="auto"
-                    Binding="{Binding Path=ExpirationDate}"
+                    Binding="{Binding Path=Product.ExpirationDate}"
                     Foreground="Black"
                     IsReadOnly="True"
                     CanUserSort="True">

@@ -15,7 +15,6 @@ namespace NewYearPresents.App.Views
     {
         public ParsingView(ParsingViewModel parsingViewModel)
         {
-            parsingViewModel.Filename = "Прайс-лист 13.10.2025г. (1) (1).xlsm";
             DataContext = parsingViewModel;
             InitializeComponent();
         }

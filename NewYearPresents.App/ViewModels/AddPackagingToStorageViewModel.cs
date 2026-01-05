@@ -110,7 +110,7 @@ namespace NewYearPresents.App.ViewModels
 
             propertiesVisibility = false;
 
-            AddButtonCommand = new ButtonCommand(async x => await AddPackagingToStorageAsync((Window)x);
+            AddButtonCommand = new ButtonCommand(async x => await AddPackagingToStorageAsync((Window)x));
         }
 
         public async Task InitializeAsync()

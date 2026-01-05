@@ -14,6 +14,28 @@ namespace NewYearPresents.Models.Extentions
             return services;
         }
 
+        public static async Task TruncateTableAsync<T>(
+        this DbContext context,
+        string schema = "dbo",
+        bool resetIdentity = true)
+        where T : class
+        {
+            var entityType = context.Model.FindEntityType(typeof(T));
+            var tableName = entityType?.GetTableName();
+
+            if (resetIdentity)
+            {
+                await context.Database.ExecuteSqlRawAsync(
+                    $"TRUNCATE TABLE [{schema}].[{tableName}]");
+            }
+            else
+            {
+                await context.Database.ExecuteSqlRawAsync(
+                    $"DELETE FROM [{schema}].[{tableName}]");
+            }
+        }
+
+
         //Products
         public static async Task SaveProductAsync(this AppDbContext _context, Product entity)
         {

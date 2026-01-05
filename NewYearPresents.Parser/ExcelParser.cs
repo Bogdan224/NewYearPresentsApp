@@ -9,22 +9,13 @@ using System.Runtime;
 using System.Text;
 using System.Xml.Linq;
 using System.Runtime.InteropServices;
+using NewYearPresents.Models.Infrastructure;
 
 namespace NewYearPresents.Parser
 {
-    public class XlsmParser
+    public class ExcelParser(Folders folders)
     {
-        private readonly string _sourceDirectory;
-        private readonly string _targetProductDirectory;
-
-        public string TargetProductDirectory => _targetProductDirectory;
-
-        public XlsmParser()
-        {
-            _sourceDirectory = $@"C:\Users\{Environment.UserName}\Downloads\";
-
-            _targetProductDirectory = $@"C:\Users\{Environment.UserName}\Downloads\Products\";
-        }
+        private Folders folders = folders;
 
         /// <summary>
         /// Парсит .xlsm файл
@@ -33,13 +24,13 @@ namespace NewYearPresents.Parser
         /// <returns></returns>
         public async Task<ParsedProductsBoxFileDTO> ParseProductsBoxesFileAsync(string filename)
         {
-            if (Directory.Exists(_targetProductDirectory)) Directory.Delete(_targetProductDirectory, true);
-            Directory.CreateDirectory(_targetProductDirectory);
+            if (Directory.Exists(folders.ProductsImages)) Directory.Delete(folders.ProductsImages, true);
+            Directory.CreateDirectory(folders.ProductsImages);
 
             ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
             using var package = new ExcelPackage();
 
-            await package.LoadAsync(_sourceDirectory + filename);
+            await package.LoadAsync(folders.Source + filename);
 
             ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
 
@@ -69,7 +60,7 @@ namespace NewYearPresents.Parser
                         dataTmp.Add(0);
                     if (j == 7)
                     {
-                        dataTmp.Add(GetImageNameFromCell(worksheet, i, j - 1));
+                        dataTmp.Add(GetImageNameFromCell(worksheet, i, j - 1, folders.ProductsImages));
                     }
                     if (value != null)
                     {
@@ -126,7 +117,7 @@ namespace NewYearPresents.Parser
                         ExpirationDate = Convert.ToInt32(dataTmp[6]),
                         Manufacturer = manufacturers.Last(),
                         ProductType = currentProductType,
-                        Image = dataTmp[5]?.ToString()
+                        ImageName = dataTmp[5]?.ToString()
                     };
 
                     products.Add(product);
@@ -148,8 +139,68 @@ namespace NewYearPresents.Parser
                     dataTmp.Clear();
             }
 
-            return new ParsedProductsBoxFileDTO() { ProductsBoxes = productsBoxes, ProductTypes = productTypes, Manufacturers = manufacturers, Products = products };
+            return new ParsedProductsBoxFileDTO(products, productTypes, manufacturers, productsBoxes);
+        }
 
+        public async Task<ParsedPackagingFileDTO> ParsePackagingsFileAsync(string filename)
+        {
+            if (!Directory.Exists(folders.PackagingsImages)) Directory.Delete(folders.PackagingsImages, true);
+            Directory.CreateDirectory(folders.PackagingsImages);
+
+            ExcelPackage.License.SetNonCommercialPersonal("Bogdan");
+            using var package = new ExcelPackage();
+
+            await package.LoadAsync(folders.Source + filename);
+
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+
+            // Чтение данных из ячеек
+            int rowCount = worksheet.Dimension.Rows;
+            int columnCount = 3;
+
+            var dataTmp = new List<object?>();
+
+            var packagings = new List<Packaging>();
+            var packagingsInStorage = new List<PackagingInStorage>();
+
+            for (int i = 2; i <= rowCount; i++)
+            {
+                for (int j = 1; j <= columnCount; j++)
+                {
+                    var value = worksheet.Cells[i, j].Value;
+                    if (j == 1 && worksheet.Cells[i, j].Value == null)
+                        continue;
+                    if (j == 2 && value is null)
+                        dataTmp.Add(GetImageNameFromCell(worksheet, i, j - 1, folders.PackagingsImages));
+                    if (value != null)
+                        dataTmp.Add(value);
+                }
+                if (dataTmp.Count == 3)
+                {
+                    var name = dataTmp[0]?.ToString().NormalizeText();
+
+                    var packaging = new Packaging()
+                    {
+                        Name = name,
+                        ImageName = dataTmp[1]?.ToString(),
+                        MaxWeight = GetTotalWeightFromString(name)
+                    };
+
+
+                    packagings.Add(packaging);
+
+                    var packagingInStorage = new PackagingInStorage()
+                    {
+                        Packaging = packaging,
+                        Count = Convert.ToInt32(dataTmp[2])
+                    };
+
+                    packagingsInStorage.Add(packagingInStorage);
+                }
+                if (dataTmp.Count > 0)
+                    dataTmp.Clear();
+            }
+            return new ParsedPackagingFileDTO(packagings, packagingsInStorage);
         }
 
         protected float GetTotalWeightFromString(string? source)
@@ -167,7 +218,7 @@ namespace NewYearPresents.Parser
                     int lastIndex = source.LastIndexOf("шт");
                     pieces = Convert.ToInt32(source.GetFloat(lastIndex));
 
-                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/")))
+                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/") || source.Contains("гр)")))
                     {
                         lastIndex = source.LastIndexOf('(');
                         try
@@ -192,7 +243,7 @@ namespace NewYearPresents.Parser
                     int lastIndex = source.LastIndexOf("шт");
                     pieces = Convert.ToInt32(source.GetFloat(lastIndex));
 
-                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/")))
+                    if (!(source.Contains("кг") || source.Contains("гр") || source.Contains("г р") || source.Contains("г ") || source.Contains("г/") || source.Contains("гр/") || source.Contains("гр)")))
                     {
                         lastIndex = source.IndexOf('/');
                         try
@@ -218,7 +269,7 @@ namespace NewYearPresents.Parser
                 int lastIndex = source.LastIndexOf("кг");
                 weight = source.GetFloat(lastIndex);
             }
-            else if (source.Contains("гр.") || source.Contains("гр ") || source.Contains("гр/"))
+            else if (source.Contains("гр.") || source.Contains("гр ") || source.Contains("гр/") || source.Contains("гр)"))
             {
                 int lastIndex = source.LastIndexOf("гр");
                 weight = source.GetFloat(lastIndex) / 1000;
@@ -241,7 +292,7 @@ namespace NewYearPresents.Parser
             return weight * pieces;
         }
 
-        protected string? GetImageNameFromCell(ExcelWorksheet worksheet, int row, int column)
+        protected string? GetImageNameFromCell(ExcelWorksheet worksheet, int row, int column, string path)
         {
             var picture = (ExcelPicture?)worksheet.Drawings.FirstOrDefault(x =>
             {
@@ -253,7 +304,7 @@ namespace NewYearPresents.Parser
 
             if (picture is null) return null;
 
-            using var fs = new FileStream(_targetProductDirectory + picture.Name + ".png", FileMode.Create);
+            using var fs = new FileStream(path + picture.Name + ".png", FileMode.Create);
 
             fs.Write(picture.Image.ImageBytes);
             return picture.Name + ".png";

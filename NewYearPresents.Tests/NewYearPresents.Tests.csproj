@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NewYearPresents.Domain\NewYearPresents.Domain.csproj" />
     <ProjectReference Include="..\NewYearPresents.Models\NewYearPresents.Models.csproj" />
     <ProjectReference Include="..\NewYearPresents.Parser\NewYearPresents.Parser.csproj" />
   </ItemGroup>

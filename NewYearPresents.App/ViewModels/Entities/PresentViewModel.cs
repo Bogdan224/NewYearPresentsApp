@@ -11,10 +11,12 @@ namespace NewYearPresents.App.ViewModels.Entities
     internal class PresentViewModel : ObservableObject
     {
         private readonly Present _present;
+        public PackagingViewModel? Packaging { get; private set; }
 
         public PresentViewModel(Present present)
         {
             _present = present;
+            if (_present.Packaging is not null) Packaging = new(_present.Packaging);
         }
 
         public int Id
@@ -22,25 +24,14 @@ namespace NewYearPresents.App.ViewModels.Entities
             get => _present.Id;
         }
 
-        public string? PackagingName
+        public string? Name
         {
-            get => _present.Packaging?.Name;
+            get => _present.Name;
             set
             {
-                if (_present.Packaging == null || _present.Packaging.Name == value) return;
-                _present.Packaging.Name = value;
-                OnPropertyChanged(nameof(_present.Packaging.Name));
-            }
-        }
-
-        public string? PackagingImage
-        {
-            get => _present.Packaging?.Image;
-            set
-            {
-                if (_present.Packaging == null || _present.Packaging.Image == value) return;
-                _present.Packaging.Image = value;
-                OnPropertyChanged(nameof(_present.Packaging.Image));
+                if (_present.Name == value) return;
+                _present.Name = value;
+                OnPropertyChanged(nameof(_present.Name));
             }
         }
 

@@ -8,7 +8,7 @@ namespace NewYearPresents.Models.Entities
 {
     public class Product : BaseEntity
     {
-        public string? Image { get; set; } = null;
+        public string? ImageName { get; set; } = null;
         public int ExpirationDate { get; set; }
         public float Weight { get; set; }
 

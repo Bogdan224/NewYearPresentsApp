@@ -7,8 +7,8 @@
         xmlns:converter="clr-namespace:NewYearPresents.App.Core.Converters"
         mc:Ignorable="d"
         Title="AddPackagingToStorageView" 
-        Height="300" Width="400"
-        MinHeight="300" MinWidth="400"
+        Height="450" Width="400"
+        MinHeight="450" MinWidth="400"
         Name="AddPackagingWindow"
         Loaded="Window_Loaded">
     <Window.Resources>
@@ -35,7 +35,7 @@ IsTextSearchEnabled="False" Width="{Binding ElementName=AddPackagingWindow,
                 </ComboBox>
             </StackPanel>
             <Separator/>
-
+            
             <StackPanel Orientation="Vertical" Visibility="{Binding PropertiesVisibility}">
                 <StackPanel Orientation="Horizontal" Margin="0 10">
                     <TextBlock Text="Макс. вес:" Width="100"/>
@@ -44,17 +44,21 @@ IsTextSearchEnabled="False" Width="{Binding ElementName=AddPackagingWindow,
                 </StackPanel>
                 <Separator/>
 
-            </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <TextBlock Text="Картинка:" Width="100"/>
+                </StackPanel>
+                <Separator/>
 
-            <StackPanel Orientation="Horizontal" Margin="0 10">
-                <TextBlock Text="Кол-во:" Width="100"/>
-                <TextBox x:Name="CountTextBox" Width="{Binding ElementName=AddPackagingWindow,
-                    Path=ActualWidth,
-                    Converter={StaticResource MathConverter},
-                    ConverterParameter=(@VALUE-170)}" 
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <TextBlock Text="Кол-во:" Width="100"/>
+                    <TextBox x:Name="CountTextBox" Width="{Binding ElementName=AddPackagingWindow,
+                        Path=ActualWidth,
+                        Converter={StaticResource MathConverter},
+                        ConverterParameter=(@VALUE-170)}" 
                          Text="{Binding CountText}"/>
+                </StackPanel>
+                <Separator/>
             </StackPanel>
-            <Separator/>
 
 
         </StackPanel>

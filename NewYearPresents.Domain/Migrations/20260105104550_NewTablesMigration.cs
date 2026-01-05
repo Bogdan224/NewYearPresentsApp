@@ -19,13 +19,19 @@ namespace NewYearPresents.Domain.Migrations
                 name: "PK_Packaging",
                 table: "Packaging");
 
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Presents");
-
             migrationBuilder.RenameTable(
                 name: "Packaging",
                 newName: "Packagings");
+
+            migrationBuilder.RenameColumn(
+                name: "Image",
+                table: "Products",
+                newName: "ImageName");
+
+            migrationBuilder.RenameColumn(
+                name: "Image",
+                table: "Packagings",
+                newName: "ImageName");
 
             migrationBuilder.AddColumn<float>(
                 name: "TotalPrice",
@@ -61,7 +67,8 @@ namespace NewYearPresents.Domain.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClientName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalPrice = table.Column<int>(type: "int", nullable: false),
-                    DateOfReceipt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -282,11 +289,15 @@ namespace NewYearPresents.Domain.Migrations
                 name: "Packagings",
                 newName: "Packaging");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Presents",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.RenameColumn(
+                name: "ImageName",
+                table: "Products",
+                newName: "Image");
+
+            migrationBuilder.RenameColumn(
+                name: "ImageName",
+                table: "Packaging",
+                newName: "Image");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Packaging",

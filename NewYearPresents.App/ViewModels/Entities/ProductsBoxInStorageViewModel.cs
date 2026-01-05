@@ -11,133 +11,17 @@ namespace NewYearPresents.App.ViewModels.Entities
     public class ProductsBoxInStorageViewModel : ObservableObject
     {
         private readonly ProductsBoxInStorage _productsBoxInStorage;
+        public ProductsBoxViewModel ProductsBox { get; private set; }
 
         public ProductsBoxInStorageViewModel(ProductsBoxInStorage productsBoxInStorage)
         {
             _productsBoxInStorage = productsBoxInStorage;
+            ProductsBox = new(_productsBoxInStorage.ProductsBox);
         }
 
         public int Id
         {
             get { return _productsBoxInStorage.Id; }
-        }
-
-        public string? Name
-        {
-            get { return _productsBoxInStorage.ProductsBox.Product.Name; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Product.Name == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Product.Name = value;
-                OnPropertyChanged("Name");
-            }
-        }
-
-        public string? ManufacturerName
-        {
-            get { return _productsBoxInStorage.ProductsBox.Product.Manufacturer?.Name; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Product.Manufacturer is null || _productsBoxInStorage.ProductsBox.Product.Manufacturer.Name == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Product.Manufacturer.Name = value;
-                OnPropertyChanged("ManufacturerName");
-            }
-        }
-
-        public string? ProductTypeName
-        {
-            get { return _productsBoxInStorage.ProductsBox.Product.ProductType?.Name; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Product.ProductType is null || _productsBoxInStorage.ProductsBox.Product.ProductType.Name == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Product.ProductType.Name = value;
-                OnPropertyChanged("ProductTypeName");
-            }
-        }
-
-        public float Price30K
-        {
-            get { return _productsBoxInStorage.ProductsBox.Price30K * Count; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Price30K == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Price30K = value;
-                OnPropertyChanged("Price30K");
-            }
-        }
-
-        public float Price60K
-        {
-            get { return _productsBoxInStorage.ProductsBox.Price60K * Count; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Price60K == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Price60K = value;
-                OnPropertyChanged("Price60K");
-            }
-        }
-
-        public float Price100K
-        {
-            get { return _productsBoxInStorage.ProductsBox.Price100K * Count; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Price100K == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Price100K = value;
-                OnPropertyChanged("Price100K");
-            }
-        }
-
-        public float Price150K
-        {
-            get { return _productsBoxInStorage.ProductsBox.Price150K * Count; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Price150K == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Price150K = value;
-                OnPropertyChanged("Price150K");
-            }
-        }
-
-        public float TotalWeight
-        {
-            get { return _productsBoxInStorage.ProductsBox.TotalWeight * Count; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.TotalWeight == value) return;
-                _productsBoxInStorage.ProductsBox.TotalWeight = value;
-                OnPropertyChanged("TotalWeight");
-            }
-        }
-
-        public float UnitWeight
-        {
-            get { return _productsBoxInStorage.ProductsBox.Product.Weight; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Product.Weight == value) return;
-                _productsBoxInStorage.ProductsBox.Product.Weight = value;
-                OnPropertyChanged("TotalWeight");
-            }
-        }
-
-        public int ExpirationDate
-        {
-            get { return _productsBoxInStorage.ProductsBox.Product.ExpirationDate; }
-            set
-            {
-                if (_productsBoxInStorage.ProductsBox.Product.ExpirationDate == value)
-                    return;
-                _productsBoxInStorage.ProductsBox.Product.ExpirationDate = value;
-                OnPropertyChanged("ExpirationDate");
-            }
         }
 
         public int Count

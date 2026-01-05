@@ -39,6 +39,17 @@ namespace NewYearPresents.App.ViewModels.Entities
             }
         }
 
+        public string? ImageName
+        {
+            get => _packaging.ImageName;
+            set
+            {
+                if (_packaging.ImageName == value) return;
+                _packaging.ImageName = value;
+                OnPropertyChanged(nameof(ImageName));
+            }
+        }
+
         public float MaxWeight
         {
             get => _packaging.MaxWeight;

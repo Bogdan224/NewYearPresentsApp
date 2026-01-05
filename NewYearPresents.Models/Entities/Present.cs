@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace NewYearPresents.Models.Entities
 {
-    public class Present
+    public class Present : BaseEntity
     {
-        public int Id { get; set; }
         public Packaging? Packaging { get; set; }
         public float TotalWeight { get; set; }
         public float TotalPrice { get; set; }
